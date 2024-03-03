@@ -2,27 +2,18 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext';
 import TradeModal from './TradeModal';
+import Counter from './Counter';
 
 function Trades() {
     const [trades, setTrades] = useState([]);
-    const [counterData, setCounterData] = useState({
-        entryPoint: 0,
-        takeProfit: 0,
-        stopLoss: 0
-    });
-    const [riskReward, setRiskReward] = useState();
-    const [modelOpen, setModelOpen] = useState(false);
-
+    const [modalOpen, setModalOpen] = useState(false);
+    const [tradeData, setTradeData] = useState();
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [token,] = useContext(AuthContext);
 
     useEffect(() => {
         getTrades();
-    },);
-
-    const handleInputChangeCounter = (e) => {
-        const { name, value } = e.target;
-        setCounterData({ ...counterData, [name]: value });
-    };
+    }, []);
 
     const table =
         <table className="table">
@@ -36,6 +27,7 @@ function Trades() {
                     <th>Ризик, %</th>
                     <th>Результат</th>
                     <th>Прибуток, %</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,43 +41,21 @@ function Trades() {
                         <td>{trade.riskPercent}</td>
                         <td>{trade.result}</td>
                         <td>{trade.profitLoss}</td>
+                        <td>
+                            <button className="edit-btn" onClick={() => { setTradeData(trade); setEditModalOpen(true); }}>edit</button>
+                            <button className="delete-btn" onClick={() => { setTradeData(trade); setConfirmModalOpen(true); }}>dlt</button>
+                        </td>
                     </tr>
                 )}
             </tbody>
         </table>;
 
-    const counter =
-        <div className="counter-container">
-            <form onSubmit={count}>
-                <div className="input-box">
-                    <label>Точка входу</label>
-                    <input type="number" name="entryPoint" required
-                        onChange={handleInputChangeCounter} />
-                </div>
-
-                <div className="input-box">
-                    <label>Тейк-профіт</label>
-                    <input type="number" name="takeProfit" required
-                        onChange={handleInputChangeCounter} />
-                </div>
-
-                <div className="input-box">
-                    <label>Стоп-лос або ціна ліквідації</label>
-                    <input type="number" name="stopLoss" required
-                        onChange={handleInputChangeCounter} />
-                </div>
-
-                <div className="count-button">
-                    <button type="submit">Розрахувати</button>
-                </div>
-            </form>
-
-            <div className="result-block">
-                <p>
-                    RR: {riskReward}
-                </p>
-            </div>
-        </div>;
+    const confirmModal =
+        <div className="confirm-modal">
+            <p></p>
+            <button onClick={() => { setConfirmModalOpen(false); deleteTrade(); }}>Confirm</button>
+            <button onClick={() => setConfirmModalOpen(false)}>Cancel</button>
+        </div>
 
     return (
         <div>
@@ -97,35 +67,53 @@ function Trades() {
 
             <div className="main-section">
                 {table}
+                {confirmModalOpen && confirmModal}
             </div>
 
             <div className="add-button">
-                <button onClick={() => setModelOpen(true)}>Додати</button>
+                <button onClick={() => setModalOpen(true)}>Додати</button>
             </div>
 
-            {modelOpen && <TradeModal closeModal={() => { setModelOpen(false) }} />}
+            {modalOpen && <TradeModal closeModal={() => { setModalOpen(false) }} />}
 
             <div className="riskreward-counter">
-                {counter}
+                <Counter />
             </div>
         </div>
     )
 
-    async function count(e) {
-        e.preventDefault();
+    async function deleteTrade() {
+        const responce = await fetch(`https://localhost:7049/api/Trades/DeleteTrade?id=${tradeData.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await responce.json();
+        console.log(data);
+    }
 
-        const responce = await fetch('https://localhost:7049/api/Trades/CountRiskReward', {
-            method: 'POST',
+    async function updateTrade() {
+        const trade = {
+            pair: tradeData.pair,
+            direction: tradeData.direction,
+            entryFactors: tradeData.entryFactors,
+            date: tradeData.date,
+            riskReward: tradeData,
+            riskPercent: tradeData.riskPercent,
+            result: tradeData.result,
+            profitLoss: tradeData.profitLoss
+        };
+        const responce = await fetch(`https://localhost:7049/api/Trades/UpdateTrade?id=${tradeData.id}`, {
+            method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(counterData)
-        })
-
-        var rr = responce.text();
-        console.log(rr);
-        setRiskReward(rr);
+            body: JSON.stringify(trade)
+        });
+        const data = await responce.json();
+        console.log(data);
     }
 
     async function getTrades() {

@@ -3,22 +3,31 @@ import { AuthContext } from './contexts/AuthContext';
 
 function Statistics() {
     const [stat, setStat] = useState();
+    const [date, setDate] = useState({
+        from: "",
+        to: ""
+    });
     const [token,] = useContext(AuthContext);
 
     useEffect(() => {
         getStat();
     })
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setDate({ ...date, [name]: value });
+    };
+
     const dateForm =
         <div className="date-container">
             <div className="input-date-block">
-                <label htmlFor="date-from">Від:</label>
-                <input type="date" name="date-from"></input>
+                <label htmlFor="from">Від:</label>
+                <input type="date" name="from" onChange={handleInputChange}></input>
             </div>
 
             <div className="input-date-block">
-                <label htmlFor="date-to">До:</label>
-                <input type="date" name="date-to"></input>
+                <label htmlFor="to">До:</label>
+                <input type="date" name="to" onChange={handleInputChange}></input>
             </div>
         </div>
 

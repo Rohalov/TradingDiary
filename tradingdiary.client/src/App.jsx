@@ -1,12 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import NoPage from './NoPage';
 import Trades from './Trades';
 import Statistics from './Statistics';
-import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
     return (

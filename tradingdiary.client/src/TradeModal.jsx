@@ -4,19 +4,20 @@ import './TradeModal.css'
 
 function TradeModal({ closeModal }) {
     const [entryFactors, setEntryFactors] = useState([]);
-    const [modelData, setModelData] = useState(
+    const [modalData, setModalData] = useState(
         {
             pair: "",
-            direction: 0,
+            direction: "0",
             date: "",
-            entryfactors: [],
-            riskreward: 0,
-            riskpercent: 0,
-            result: 0,
-            profitloss: 0
+            entryfactors: ["sfp"],
+            riskreward: "0",
+            riskpercent: "0",
+            result: "0",
+            profitloss: "0"
         }
     );
     const [pairs, setPairs] = useState([]);
+    const [factorsModalOpen, setFactorsModalOpen] = useState(false);
     const [token,] = useContext(AuthContext);
 
     useEffect(() => {
@@ -26,8 +27,35 @@ function TradeModal({ closeModal }) {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setModelData({ ...modelData, [name]: value });
+        setModalData({ ...modalData, [name]: value });
     };
+
+    const handleChooseFactor = (e) => {
+        const { name } = e.target;
+        const value = e.target.checked;
+        const ef = modalData.entryfactors;
+        if (value) {
+            ef.push(name);
+            setModalData({ ...modalData, entryfactors: ef });
+        } else {
+            ef.pop(name);
+            setModalData({ ...modalData, entryfactors: ef });
+        }
+    }
+
+    const entryFactorsModal =
+        <div className="factors-container">
+            {entryFactors.map((factor) =>
+                <div className="factor-checkbox" key={factor.id}>
+                    <label htmlFor={factor.name}>{factor.name}</label>
+                    {isChecked(factor.name) === true
+                        ? <input type="checkbox" name={factor.name} onChange={handleChooseFactor} checked></input>
+                        : <input type="checkbox" name={factor.name} onChange={handleChooseFactor}></input>
+                    }
+                </div>
+            )}
+            <button onClick={() => setFactorsModalOpen(false)}>Підтвердити</button>
+        </div>
 
     return (
         <div className="modal-container">
@@ -47,9 +75,9 @@ function TradeModal({ closeModal }) {
 
                     <div className="form-group">
                         <label htmlFor="direction">Напрямок руху</label>
-                        <select name="direction" required>
-                            <option value="long">Long</option>
-                            <option value="short">Short</option>
+                        <select name="direction" onChange={handleInputChange}>
+                            <option value="0">Long</option>
+                            <option value="1">Short</option>
                         </select>
                     </div>
 
@@ -59,13 +87,9 @@ function TradeModal({ closeModal }) {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="entryFactors">Фактори входу</label>
-                        {entryFactors.map((factor) =>
-                            <div className="factor-checkbox" key={factor.id}>
-                                <label htmlFor={factor.name}>{factor.name}</label>
-                                <input type="checkbox" name={factor.name}></input>
-                            </div>
-                        )}
+                        <label htmlFor="entryfactors">Фактори входу</label>
+                        <button onClick={() => setFactorsModalOpen(true)}>Обрати</button>
+                        {factorsModalOpen && entryFactorsModal}
                     </div>
 
                     <div className="form-group">
@@ -80,10 +104,10 @@ function TradeModal({ closeModal }) {
 
                     <div className="form-group">
                         <label htmlFor="result">Результат</label>
-                        <select name="result">
-                            <option value="profit">Прибуток</option>
-                            <option value="loss">Збиток</option>
-                            <option value="breakeven">Беззбиток</option>
+                        <select name="result" onChange={handleInputChange}>
+                            <option value="0">Прибуток</option>
+                            <option value="1">Збиток</option>
+                            <option value="2">Беззбиток</option>
                         </select>
                     </div>
 
@@ -106,14 +130,22 @@ function TradeModal({ closeModal }) {
         closeModal();
     }
 
+    async function isChecked(value) {
+        if (modalData.entryfactors.indexOf(value) == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     async function addTrade() {
         const responce = await fetch('https://localhost:7049/api/Trades/AddTrade', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(modelData)
+            body: JSON.stringify(modalData)
         });
         const data = await responce.json();
         console.log(data);
