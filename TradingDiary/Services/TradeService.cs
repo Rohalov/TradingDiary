@@ -25,7 +25,11 @@ namespace TradingDiary.Services
             }
             var trades = await _context.Trades.Include(t => t.EntryFactors)
                 .Where(t => t.UserCardId == userCard.Id).ToListAsync();
-            trades.ForEach(t => { t.UserCard = null; });
+            trades.ForEach(t =>
+            {
+                t.UserCard = null;
+                t.EntryFactors.ForEach(f => f.Trades = null);
+            });
             return trades;
         }
 
@@ -121,51 +125,6 @@ namespace TradingDiary.Services
                 return rr;
             });
             return res;
-        }
-
-        public async Task<TradesStaticticModel> GetStatictic(int userId, DateTimeOffset from, DateTimeOffset to)
-        {
-            var userCard = await _context.UserCards
-                .Where(u => u.UserId == userId).FirstOrDefaultAsync();
-
-            if (userCard == null)
-            {
-                return null;
-            }
-            var trades = await _context.Trades.Include(t => t.EntryFactors)
-                .Where(t => t.UserCardId == userCard.Id)
-                .Where(t => t.Date >= from && t.Date <= to)
-                .ToListAsync();
-
-            var profitTrades = trades.Where(t => t.Result == ResultEnum.Profit).Count();
-            var lossTrades = trades.Where(t => t.Result == ResultEnum.Loss).Count();
-            var pl = trades.Select(t => t.ProfitLoss).Average();
-            var bestTrade = trades.Where(t => t.ProfitLoss == trades.Select(t => t.ProfitLoss).Max()).FirstOrDefault();
-            var worstTrade = trades.Where(t => t.ProfitLoss == trades.Select(t => t.ProfitLoss).Min()).FirstOrDefault();
-            var avgRR = trades.Select(t => t.RiskReward).Average();
-            var avgRisk = trades.Select(t => t.RiskPercent).Average();
-            var pairs = trades.GroupBy(t => t.Pair).Select(t => new
-            {
-                key = t.Key,
-                avg = trades.Where(x => x.Pair == t.Key).Select(x => x.ProfitLoss).Average()
-            });
-            var bestp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Max()).ToList().Select(t => t.key).FirstOrDefault();
-            var worstp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Min()).ToList().Select(t => t.key).FirstOrDefault();
-
-            var result = new TradesStaticticModel
-            {
-                Total = trades.Count,
-                Profit = profitTrades,
-                Loss = lossTrades,
-                ProfitLoss = pl,
-                BestTrade = bestTrade,
-                WorstTrade = worstTrade,
-                AvgRiskReward = avgRR,
-                AvgRisk = avgRisk,
-                BestTradingPair = bestp,
-                WorstTradingPair = worstp
-            };
-            return result;
         }
     }
 }

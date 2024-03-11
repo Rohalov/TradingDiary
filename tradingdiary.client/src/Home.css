@@ -1,0 +1,22 @@
+.header{
+    width: 100%;
+    margin-bottom: 25%;
+    font-size: 20px;
+}
+
+.button-container button{
+    width: 40%;
+    height: 50px;
+    border-radius: 25px;
+    background-color: rgb(5, 137, 5);
+    font-size: 22px;
+    padding: 0;
+}
+
+.login-btn{
+    float: inline-start;
+}
+
+.register-btn{
+    float:inline-end;
+}

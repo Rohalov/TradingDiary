@@ -7,13 +7,36 @@ import Counter from './Counter';
 function Trades() {
     const [trades, setTrades] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
-    const [tradeData, setTradeData] = useState();
+    const [tradeData, setTradeData] = useState(null);
+    const [currentTradeId, setCurrentTradeId] = useState();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [token,] = useContext(AuthContext);
+
+    const directionValues = { 0: "Long", 1: "Short" };
+    const resultValues = { 0: "Прибуток", 1: "Збиток", 2: "Беззбиток" };
 
     useEffect(() => {
         getTrades();
     }, []);
+
+    const handleEditRow = (index)=> {
+        setCurrentTradeId(trades[index].id);
+        const trade = {
+            pair: trades[index].pair,
+            direction: trades[index].direction,
+            entryFactors: [],
+            date: trades[index].date,
+            riskReward: trades[index].riskReward,
+            riskPercent: trades[index].riskPercent,
+            result: trades[index].result,
+            profitLoss: trades[index].profitLoss
+        };
+        trades[index].entryFactors.forEach(f => {
+            trade.entryFactors.push(f.name);
+        });
+        setTradeData(trade);
+        setModalOpen(true);
+    }
 
     const table =
         <table className="table">
@@ -31,19 +54,19 @@ function Trades() {
                 </tr>
             </thead>
             <tbody>
-                {trades.map(trade =>
+                {trades.map((trade , index) =>
                     <tr key={trade.id}>
                         <td>{trade.pair}</td>
-                        <td>{trade.direction}</td>
+                        <td>{directionValues[trade.direction]}</td>
                         <td>{trade.date}</td>
                         <td>{trade.entryFactors.map(factor => factor.name)}</td>
                         <td>{trade.riskReward}</td>
                         <td>{trade.riskPercent}</td>
-                        <td>{trade.result}</td>
+                        <td>{resultValues[trade.result]}</td>
                         <td>{trade.profitLoss}</td>
                         <td>
-                            <button className="edit-btn" onClick={() => { setTradeData(trade); setEditModalOpen(true); }}>edit</button>
-                            <button className="delete-btn" onClick={() => { setTradeData(trade); setConfirmModalOpen(true); }}>dlt</button>
+                            <button className="edit-btn" onClick={() => handleEditRow(index)}>edit</button>
+                            <button className="delete-btn" onClick={() => { setCurrentTradeId(trade.id); setConfirmModalOpen(true); }}>dlt</button>
                         </td>
                     </tr>
                 )}
@@ -58,7 +81,7 @@ function Trades() {
         </div>
 
     return (
-        <div>
+        <div className='container'>
             <div className="top-header-block">
                 <Link to="/statistics">
                     <button>Статистика</button>
@@ -74,7 +97,11 @@ function Trades() {
                 <button onClick={() => setModalOpen(true)}>Додати</button>
             </div>
 
-            {modalOpen && <TradeModal closeModal={() => { setModalOpen(false) }} />}
+            {modalOpen && <TradeModal
+                closeModal={() => { setModalOpen(false); setTradeData(null); }}
+                onSubmit={handleSubmit}
+                defaultValue={tradeData}
+            />}
 
             <div className="riskreward-counter">
                 <Counter />
@@ -82,8 +109,16 @@ function Trades() {
         </div>
     )
 
+    async function handleSubmit(trade) {
+        if (tradeData == null) {
+            addTrade(trade);
+        } else {
+            updateTrade(trade);
+        }
+    }
+
     async function deleteTrade() {
-        const responce = await fetch(`https://localhost:7049/api/Trades/DeleteTrade?id=${tradeData.id}`, {
+        const responce = await fetch(`https://localhost:7049/api/Trades/DeleteTrade?id=${currentTradeId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -93,18 +128,21 @@ function Trades() {
         console.log(data);
     }
 
-    async function updateTrade() {
-        const trade = {
-            pair: tradeData.pair,
-            direction: tradeData.direction,
-            entryFactors: tradeData.entryFactors,
-            date: tradeData.date,
-            riskReward: tradeData,
-            riskPercent: tradeData.riskPercent,
-            result: tradeData.result,
-            profitLoss: tradeData.profitLoss
-        };
-        const responce = await fetch(`https://localhost:7049/api/Trades/UpdateTrade?id=${tradeData.id}`, {
+    async function addTrade(trade) {
+        const responce = await fetch('https://localhost:7049/api/Trades/AddTrade', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(trade)
+        });
+        const data = await responce.json();
+        console.log(data);
+    }
+
+    async function updateTrade(trade) {
+        const responce = await fetch(`https://localhost:7049/api/Trades/UpdateTrade?id=${currentTradeId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,

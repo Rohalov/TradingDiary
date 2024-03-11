@@ -50,7 +50,7 @@ function EntryFactors() {
         </div>
 
     return (
-        <div className="container">
+        <div className="factors-container">
             <div className="show-block">
                 {factors.map(factor =>
                     <div key={factor.id} className="factor-block">

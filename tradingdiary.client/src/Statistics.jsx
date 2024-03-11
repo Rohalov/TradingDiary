@@ -7,10 +7,10 @@ function Statistics() {
         from: "",
         to: ""
     });
+    const [dateFormOpen, setDateFormOpen] = useState(false);
     const [token,] = useContext(AuthContext);
 
-    useEffect(() => {
-        getStat();
+    useEffect(() => { 
     })
 
     const handleInputChange = (e) => {
@@ -20,15 +20,21 @@ function Statistics() {
 
     const dateForm =
         <div className="date-container">
-            <div className="input-date-block">
-                <label htmlFor="from">Від:</label>
-                <input type="date" name="from" onChange={handleInputChange}></input>
-            </div>
+            <form>
+                <div className="input-date-block">
+                    <label htmlFor="from">Від:</label>
+                    <input type="date" name="from" onChange={handleInputChange} required></input>
+                </div>
 
-            <div className="input-date-block">
-                <label htmlFor="to">До:</label>
-                <input type="date" name="to" onChange={handleInputChange}></input>
-            </div>
+                <div className="input-date-block">
+                    <label htmlFor="to">До:</label>
+                    <input type="date" name="to" onChange={handleInputChange} required></input>
+                </div>
+
+                <div className="submit-btn">
+                    <button type="submit" onClick={() => { setDateFormOpen(false); }}>Підтвердити</button>
+                </div>
+            </form>
         </div>
 
     return (
@@ -37,22 +43,22 @@ function Statistics() {
                 <button>Тиждень</button>
                 <button>Місяць</button>
                 <button>Всі угоди</button>
-                <button>Обрати період</button>
+                <button onClick={() => setDateFormOpen(true)}>Обрати період</button>
+                {dateFormOpen && dateForm}
             </div>
 
             <div>
-               
+
             </div>
         </div>
     )
 
-    async function getStat() {
+    async function getCustomStat() {
         const responce = await fetch('', {
             method: '',
             headers: {
                 'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify()
+            }
         })
             .catch(error => console.error('Error:', error));
 

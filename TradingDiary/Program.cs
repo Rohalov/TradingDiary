@@ -38,6 +38,7 @@ internal class Program
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<ITradeService, TradeService>();
         builder.Services.AddScoped<IEntryFactorService, EntryFactorService>();
+        builder.Services.AddScoped<IStatisticsService, StatisticsService>();
         builder.Services.AddDbContext<ApplicationDbContext>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

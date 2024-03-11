@@ -19,19 +19,19 @@ function Counter() {
     return (
         <div className="counter-container">
             <form onSubmit={count}>
-                <div className="input-box">
+                <div className="input-block">
                     <label>Точка входу</label>
                     <input type="text" name="entryPoint" required
                         onChange={handleInputChange} />
                 </div>
 
-                <div className="input-box">
+                <div className="input-block">
                     <label>Тейк-профіт</label>
                     <input type="text" name="takeProfit" required
                         onChange={handleInputChange} />
                 </div>
 
-                <div className="input-box">
+                <div className="input-block">
                     <label>Стоп-лос або ціна ліквідації</label>
                     <input type="text" name="stopLoss" required
                         onChange={handleInputChange} />

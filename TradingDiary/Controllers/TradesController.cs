@@ -87,23 +87,5 @@ namespace TradingDiary.Controllers
             var rr = await _tradeService.CountRiskReward(data);
             return Ok(rr);
         }
-
-        [HttpPost]
-        [Route("GetStatistic")]
-        [Authorize(Policy = "RequireUserRole")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TradesStaticticModel>> GetStatictic(DateTimeOffset from, DateTimeOffset to)
-        {
-            var userId = Convert.ToInt32(User.FindFirst
-               (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-            var result = await _tradeService.GetStatictic(userId, from, to);
-            if (result == null)
-            {
-                return NotFound("Trades not found");
-            }
-            return Ok(result);
-        }
     }
 }

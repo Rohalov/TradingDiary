@@ -10,6 +10,5 @@ namespace TradingDiary.Services
         Task<Trade> UpdateTrade(int id , TradeDTO updatedTrade);
         Task<Trade> DeleteTrade(int id);
         Task<decimal> CountRiskReward(CounterData data);
-        Task<TradesStaticticModel> GetStatictic(int userId, DateTimeOffset from, DateTimeOffset to);
     }
 }

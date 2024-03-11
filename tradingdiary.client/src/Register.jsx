@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './Register.css'
 
 function Register() {
     const [userData, setUserData] = useState({
         userName: "",
-        eMail: "",
+        email: "",
         password: ""
     });
-
     const [errorMessage, setErrorMessage] = useState();
 
     const navigate = useNavigate();
@@ -18,25 +18,22 @@ function Register() {
     };
 
     return (
-        <div className="container">
+        <div className="register-container">
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
                 <div className="input-box">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" name="username" value={userData.userName}
-                        placeholder="Username" onChange={handleInputChange} />
+                    <input type="text" name="userName" value={userData.userName}
+                        placeholder="Username" onChange={handleInputChange} required/>
                 </div>
 
                 <div className="input-box">
-                    <label htmlFor="email">Email</label>
                     <input type="email" name="email" value={userData.email}
-                        placeholder="Email" onChange={handleInputChange} />
+                        placeholder="Email" onChange={handleInputChange} required/>
                 </div>
 
                 <div className="input-box">
-                    <label htmlFor="password">Password</label>
                     <input type="password" name="password" value={userData.password}
-                        placeholder="Password" onChange={handleInputChange} />
+                        placeholder="Password" onChange={handleInputChange} required/>
                 </div>
 
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -65,10 +62,7 @@ function Register() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(userData)
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error));
+        });
 
         if (responce.status == 201) {
             navigate("/login");

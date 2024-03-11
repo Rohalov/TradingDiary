@@ -2,23 +2,24 @@ import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from './contexts/AuthContext';
 import './TradeModal.css'
 
-function TradeModal({ closeModal }) {
+function TradeModal({ closeModal, onSubmit, defaultValue }) {
     const [entryFactors, setEntryFactors] = useState([]);
     const [modalData, setModalData] = useState(
-        {
+        defaultValue || {
             pair: "",
             direction: "0",
             date: "",
-            entryfactors: ["sfp"],
-            riskreward: "0",
-            riskpercent: "0",
+            entryFactors: [],
+            riskReward: "",
+            riskPercent: "",
             result: "0",
-            profitloss: "0"
+            profitLoss: ""
         }
     );
     const [pairs, setPairs] = useState([]);
     const [factorsModalOpen, setFactorsModalOpen] = useState(false);
     const [token,] = useContext(AuthContext);
+    const date = modalData.date.split('T')[0];
 
     useEffect(() => {
         getAllTradingPair();
@@ -33,7 +34,7 @@ function TradeModal({ closeModal }) {
     const handleChooseFactor = (e) => {
         const { name } = e.target;
         const value = e.target.checked;
-        const ef = modalData.entryfactors;
+        const ef = modalData.entryFactors;
         if (value) {
             ef.push(name);
             setModalData({ ...modalData, entryfactors: ef });
@@ -44,17 +45,18 @@ function TradeModal({ closeModal }) {
     }
 
     const entryFactorsModal =
-        <div className="factors-container">
-            {entryFactors.map((factor) =>
-                <div className="factor-checkbox" key={factor.id}>
-                    <label htmlFor={factor.name}>{factor.name}</label>
-                    {isChecked(factor.name) === true
-                        ? <input type="checkbox" name={factor.name} onChange={handleChooseFactor} checked></input>
-                        : <input type="checkbox" name={factor.name} onChange={handleChooseFactor}></input>
-                    }
-                </div>
-            )}
-            <button onClick={() => setFactorsModalOpen(false)}>Підтвердити</button>
+        <div className="modal-container">
+            <div className="factors-modal">
+                {entryFactors.map((factor) =>
+                    <div className="factor-checkbox" key={factor.id}>
+                        <label htmlFor={factor.name}>{factor.name}</label>
+                        {
+                            <input type="checkbox" name={factor.name} onChange={handleChooseFactor} checked={isChecked(factor.name)}></input>
+                        }
+                    </div>
+                )}
+                <button onClick={() => setFactorsModalOpen(false)}>Підтвердити</button>
+            </div>
         </div>
 
     return (
@@ -66,7 +68,7 @@ function TradeModal({ closeModal }) {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="pair">Торгова пара</label>
-                        <select name="pair">
+                        <select name="pair" onChange={handleInputChange} value={modalData.pair}>
                             {pairs.map((pair) =>
                                 <option key={pair.id} value={pair.name}>{pair.name}</option>
                             )}
@@ -75,7 +77,7 @@ function TradeModal({ closeModal }) {
 
                     <div className="form-group">
                         <label htmlFor="direction">Напрямок руху</label>
-                        <select name="direction" onChange={handleInputChange}>
+                        <select name="direction" onChange={handleInputChange} value={modalData.direction}>
                             <option value="0">Long</option>
                             <option value="1">Short</option>
                         </select>
@@ -83,28 +85,28 @@ function TradeModal({ closeModal }) {
 
                     <div className="form-group">
                         <label htmlFor="date">Дата</label>
-                        <input type="date" name="date" onChange={handleInputChange} required></input>
+                        <input type="date" name="date" onChange={handleInputChange} value={date} required></input>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="entryfactors">Фактори входу</label>
+                        <label htmlFor="entryFactors">Фактори входу</label>
                         <button onClick={() => setFactorsModalOpen(true)}>Обрати</button>
                         {factorsModalOpen && entryFactorsModal}
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="riskreward">RR</label>
-                        <input type="number" step="0.1" name="riskreward" onChange={handleInputChange} required></input>
+                        <label htmlFor="riskReward">RR</label>
+                        <input type="number" step="0.1" name="riskReward" onChange={handleInputChange} value={modalData.riskReward} required></input>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="riskpercent">Ризик у % від деп.</label>
-                        <input type="number" min="0" max="100" step="0.1" name="riskpercent" onChange={handleInputChange} required></input>%
+                        <label htmlFor="riskPercent">Ризик у % від деп.</label>
+                        <input type="number" min="0" max="100" step="0.1" name="riskPercent" onChange={handleInputChange} value={modalData.riskPercent} required></input>%
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="result">Результат</label>
-                        <select name="result" onChange={handleInputChange}>
+                        <select name="result" onChange={handleInputChange} value={modalData.result}>
                             <option value="0">Прибуток</option>
                             <option value="1">Збиток</option>
                             <option value="2">Беззбиток</option>
@@ -112,12 +114,15 @@ function TradeModal({ closeModal }) {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="profitloss">Прибуток у %| P&L</label>
-                        <input type="number" min="-100" step="0.1" name="profitloss" onChange={handleInputChange} required></input>%
+                        <label htmlFor="profitLoss">Прибуток у %| P&L</label>
+                        <input type="number" min="-100" step="0.1" name="profitLoss" onChange={handleInputChange} value={modalData.profitLoss} required></input>%
                     </div>
 
                     <div className="submit-button">
-                        <button type="submit">Додати</button>
+                        {defaultValue
+                            ? <button type="submit">Змінити</button>
+                            : <button type="submit">Додати</button>
+                        }
                     </div>
                 </form>
             </div>
@@ -126,29 +131,15 @@ function TradeModal({ closeModal }) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        addTrade();
+        if (modalData.pair == "") {
+            modalData.pair = pairs[0].name;
+        }
+        onSubmit(modalData);
         closeModal();
     }
 
-    async function isChecked(value) {
-        if (modalData.entryfactors.indexOf(value) == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    async function addTrade() {
-        const responce = await fetch('https://localhost:7049/api/Trades/AddTrade', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(modalData)
-        });
-        const data = await responce.json();
-        console.log(data);
+    function isChecked(value) {
+        return modalData.entryFactors.includes(value);
     }
 
     async function getEntryFactors() {

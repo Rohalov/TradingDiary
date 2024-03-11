@@ -11,7 +11,16 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal{
+.factors-modal{
+    width: 20%;
+    border: 2px solid white;
+}
+
+.factors-modal button{
+    margin-top: 10px;
+}
+
+.modal, .factors-modal{
     border-radius: 10px;
     background-color: black;
     padding: 10px;

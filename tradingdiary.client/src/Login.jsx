@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext';
+import './Login.css'
 
 function Login() {
     const [userData, setUserData] = useState({
@@ -19,29 +20,27 @@ function Login() {
     };
 
     return (
-        <div className="container">
+        <div className="login-container">
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
                 <div className="input-box">
-                    <label htmlFor="userName">Username</label>
                     <input type="text" name="userName" value={userData.userName}
                         placeholder="Username" onChange={handleInputChange} required autoFocus/>
                 </div>
 
                 <div className="input-box">
-                    <label htmlFor="password">Password</label>
                     <input type="password" name="password" value={userData.password}
                         placeholder="Password" onChange={handleInputChange} required />
                 </div>
 
-                <div className="forgot">
-                    <a href="#">Forgot password?</a>
-                </div>
-
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
-
+                
                 <div className="submit-button">
                     <button type="submit">Login</button>
+                </div>
+
+                <div className="forgot">
+                    <a href="#">Forgot password?</a>
                 </div>
 
                 <div className="register-link">
