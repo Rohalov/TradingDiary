@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import TradeModal from './TradeModal';
 import Counter from './Counter';
+import Navbar from '../../components/Navbar/Navbar';
+import './Trades.css';
 
 function Trades() {
     const [trades, setTrades] = useState([]);
@@ -19,7 +20,7 @@ function Trades() {
         getTrades();
     }, []);
 
-    const handleEditRow = (index)=> {
+    const handleEditRow = (index) => {
         setCurrentTradeId(trades[index].id);
         const trade = {
             pair: trades[index].pair,
@@ -42,6 +43,7 @@ function Trades() {
         <table className="table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Торгова пара</th>
                     <th>Напрямок</th>
                     <th>Дата</th>
@@ -54,11 +56,12 @@ function Trades() {
                 </tr>
             </thead>
             <tbody>
-                {trades.map((trade , index) =>
+                {trades.map((trade, index) =>
                     <tr key={trade.id}>
+                        <td>{index + 1}</td>
                         <td>{trade.pair}</td>
                         <td>{directionValues[trade.direction]}</td>
-                        <td>{trade.date}</td>
+                        <td>{trade.date.split('T')[0]}</td>
                         <td>{trade.entryFactors.map(factor => factor.name)}</td>
                         <td>{trade.riskReward}</td>
                         <td>{trade.riskPercent}</td>
@@ -74,18 +77,18 @@ function Trades() {
         </table>;
 
     const confirmModal =
-        <div className="confirm-modal">
-            <p></p>
-            <button onClick={() => { setConfirmModalOpen(false); deleteTrade(); }}>Confirm</button>
-            <button onClick={() => setConfirmModalOpen(false)}>Cancel</button>
+        <div className="modal-container">
+            <div className="confirm-modal">
+                <p>Ви справді хочете видалити запис?</p>
+                <button className='confirm-btn' onClick={() => { setConfirmModalOpen(false); deleteTrade(); }}>Так</button>
+                <button className='cancel-btn' onClick={() => setConfirmModalOpen(false)}>Ні</button>
+            </div>
         </div>
 
     return (
         <div className='container'>
             <div className="top-header-block">
-                <Link to="/statistics">
-                    <button>Статистика</button>
-                </Link>
+                <Navbar/>
             </div>
 
             <div className="main-section">
@@ -118,7 +121,7 @@ function Trades() {
     }
 
     async function deleteTrade() {
-        const responce = await fetch(`https://localhost:7049/api/Trades/DeleteTrade?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades/DeleteTrade?id=${currentTradeId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -129,7 +132,7 @@ function Trades() {
     }
 
     async function addTrade(trade) {
-        const responce = await fetch('https://localhost:7049/api/Trades/AddTrade', {
+        const responce = await fetch('/api/Trades/AddTrade', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -142,7 +145,7 @@ function Trades() {
     }
 
     async function updateTrade(trade) {
-        const responce = await fetch(`https://localhost:7049/api/Trades/UpdateTrade?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades/UpdateTrade?id=${currentTradeId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -156,7 +159,7 @@ function Trades() {
 
     async function getTrades() {
         console.log("getTrades");
-        const responce = await fetch('https://localhost:7049/api/Trades/GetAllUserTrades', {
+        const responce = await fetch('/api/Trades/GetAllUserTrades', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

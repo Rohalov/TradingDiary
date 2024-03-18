@@ -13,7 +13,7 @@ namespace TradingDiary.Services
             _context = context; 
         }
 
-        public async Task<TradesStatisticModel> GetStatisticsForWeek(int userId)
+        public async Task<StatisticModel> GetStatisticsForWeek(int userId)
         {
             var today = DateTime.Today;
 
@@ -23,7 +23,7 @@ namespace TradingDiary.Services
             return result;
         }
 
-        public async Task<TradesStatisticModel> GetStatisticsForMonth(int userId)
+        public async Task<StatisticModel> GetStatisticsForMonth(int userId)
         {
             var today = DateTime.Today;
 
@@ -33,7 +33,7 @@ namespace TradingDiary.Services
             return result;
         }
 
-        public async Task<TradesStatisticModel> GetStatisticsAllTime(int userId)
+        public async Task<StatisticModel> GetStatisticsAllTime(int userId)
         {
             var userCard = await _context.UserCards
                 .Where(u => u.UserId == userId).FirstOrDefaultAsync();
@@ -45,7 +45,8 @@ namespace TradingDiary.Services
             var trades = await _context.Trades.Include(t => t.EntryFactors)
                 .Where(t => t.UserCardId == userCard.Id)
                 .ToListAsync();
-
+            
+            var from = trades.Select(t => t.Date).Min(t => t.Date);
             var profitTrades = trades.Where(t => t.Result == ResultEnum.Profit).Count();
             var lossTrades = trades.Where(t => t.Result == ResultEnum.Loss).Count();
             var pl = trades.Select(t => t.ProfitLoss).Average();
@@ -61,23 +62,25 @@ namespace TradingDiary.Services
             var bestp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Max()).ToList().Select(t => t.key).FirstOrDefault();
             var worstp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Min()).ToList().Select(t => t.key).FirstOrDefault();
 
-            var result = new TradesStatisticModel
+            var result = new StatisticModel
             {
+                From = from,
+                To = DateTime.Today,
                 Total = trades.Count,
                 Profit = profitTrades,
                 Loss = lossTrades,
-                ProfitLoss = pl,
+                ProfitLoss = Math.Round(pl, 3),
                 BestTrade = bestTrade,
                 WorstTrade = worstTrade,
-                AvgRiskReward = avgRR,
-                AvgRisk = avgRisk,
+                AvgRiskReward = Math.Round(avgRR, 3),
+                AvgRisk =  Math.Round(avgRisk, 3),
                 BestTradingPair = bestp,
                 WorstTradingPair = worstp
             };
             return result;
         }
 
-        public async Task<TradesStatisticModel> GetCustomStatistics(int userId, DateTimeOffset from, DateTimeOffset to)
+        public async Task<StatisticModel> GetCustomStatistics(int userId, DateTime from, DateTime to)
         {
             var userCard = await _context.UserCards
                 .Where(u => u.UserId == userId).FirstOrDefaultAsync();
@@ -106,16 +109,18 @@ namespace TradingDiary.Services
             var bestp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Max()).ToList().Select(t => t.key).FirstOrDefault();
             var worstp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Min()).ToList().Select(t => t.key).FirstOrDefault();
 
-            var result = new TradesStatisticModel
+            var result = new StatisticModel
             {
+                From = from,
+                To = to,
                 Total = trades.Count,
                 Profit = profitTrades,
                 Loss = lossTrades,
-                ProfitLoss = pl,
+                ProfitLoss = Math.Round(pl, 3),
                 BestTrade = bestTrade,
                 WorstTrade = worstTrade,
-                AvgRiskReward = avgRR,
-                AvgRisk = avgRisk,
+                AvgRiskReward = Math.Round(avgRR, 3),
+                AvgRisk = Math.Round(avgRisk, 3),
                 BestTradingPair = bestp,
                 WorstTradingPair = worstp
             };

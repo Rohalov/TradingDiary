@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import './TradeModal.css'
 
 function TradeModal({ closeModal, onSubmit, defaultValue }) {
@@ -143,7 +143,7 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
     }
 
     async function getEntryFactors() {
-        const responce = await fetch('https://localhost:7049/api/EntryFactors/GetAllUserEntryFactors', {
+        const responce = await fetch('/api/EntryFactors/GetAllUserEntryFactors', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -157,7 +157,7 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
     }
 
     async function getAllTradingPair() {
-        const responce = await fetch('https://localhost:7049/api/TradingPairs/AllTradingPairs', {
+        const responce = await fetch('/api/TradingPairs/AllTradingPairs', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

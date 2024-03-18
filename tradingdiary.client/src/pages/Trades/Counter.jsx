@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import './Counter.css';
 
 function Counter() {
     const [riskReward, setRiskReward] = useState();
@@ -46,20 +47,19 @@ function Counter() {
                 <div className="count-button">
                     <button type="submit">Розрахувати</button>
                 </div>
+
+                <div className="result-block">
+                    RR: {riskReward == undefined ? "" : riskReward}
+                </div>
             </form>
 
-            <div className="result-block">
-                <p>
-                    RR: {riskReward == undefined ? "" : riskReward}
-                </p>
-            </div>
         </div>
     )
 
     async function count(e) {
         e.preventDefault();
         if (isValidCounterData()) {
-            const responce = await fetch('https://localhost:7049/api/Trades/CountRiskReward', {
+            const responce = await fetch('/api/Trades/CountRiskReward', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

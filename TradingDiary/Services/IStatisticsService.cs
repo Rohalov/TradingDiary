@@ -4,9 +4,9 @@ namespace TradingDiary.Services
 {
     public interface IStatisticsService
     {
-        Task<TradesStatisticModel> GetStatisticsForWeek(int userId);
-        Task<TradesStatisticModel> GetStatisticsForMonth(int userId);
-        Task<TradesStatisticModel> GetStatisticsAllTime(int userId);
-        Task<TradesStatisticModel> GetCustomStatistics(int userId, DateTimeOffset from, DateTimeOffset to);
+        Task<StatisticModel> GetStatisticsForWeek(int userId);
+        Task<StatisticModel> GetStatisticsForMonth(int userId);
+        Task<StatisticModel> GetStatisticsAllTime(int userId);
+        Task<StatisticModel> GetCustomStatistics(int userId, DateTime from, DateTime to);
     }
 }

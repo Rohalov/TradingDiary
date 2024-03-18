@@ -56,7 +56,7 @@ function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const responce = await fetch('https://localhost:7049/api/Authentication/register', {
+        const responce = await fetch('/api/Authentication/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

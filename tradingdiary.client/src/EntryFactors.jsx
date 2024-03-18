@@ -79,7 +79,7 @@ function EntryFactors() {
     )
 
     async function getEntryFactors() {
-        const responce = await fetch('https://localhost:7049/api/EntryFactors/GetAllUserEntryFactors', {
+        const responce = await fetch('/api/EntryFactors/GetAllUserEntryFactors', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -94,7 +94,7 @@ function EntryFactors() {
 
     async function addFactor(e) {
         e.preventDefault();
-        const responce = await fetch('https://localhost:7049/api/EntryFactors/AddEntryFactor', {
+        const responce = await fetch('/api/EntryFactors/AddEntryFactor', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ function EntryFactors() {
     }
 
     async function deleteFactor() {
-        const responce = await fetch(`https://localhost:7049/api/EntryFactors/DeleteEntryFactor?factorId=${factorData.id}`, {
+        const responce = await fetch(`/api/EntryFactors/DeleteEntryFactor?factorId=${factorData.id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -128,7 +128,7 @@ function EntryFactors() {
         const name = {
             name: factorData.name
         };
-        const responce = await fetch(`https://localhost:7049/api/EntryFactors/UpdateEntryFactor?factorId=${factorData.id}`, {
+        const responce = await fetch(`/api/EntryFactors/UpdateEntryFactor?factorId=${factorData.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

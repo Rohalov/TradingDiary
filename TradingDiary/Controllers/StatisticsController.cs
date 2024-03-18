@@ -24,7 +24,7 @@ namespace TradingDiary.Controllers
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TradesStatisticModel>> GetStatisticsForWeek()
+        public async Task<ActionResult<StatisticModel>> GetStatisticsForWeek()
         {
             var userId = Convert.ToInt32(User.FindFirst
                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
@@ -42,7 +42,7 @@ namespace TradingDiary.Controllers
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TradesStatisticModel>> GetStatisticsForMonth()
+        public async Task<ActionResult<StatisticModel>> GetStatisticsForMonth()
         {
             var userId = Convert.ToInt32(User.FindFirst
                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
@@ -60,7 +60,7 @@ namespace TradingDiary.Controllers
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TradesStatisticModel>> GetStatisticsAllTime()
+        public async Task<ActionResult<StatisticModel>> GetStatisticsAllTime()
         {
             var userId = Convert.ToInt32(User.FindFirst
                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
@@ -78,7 +78,7 @@ namespace TradingDiary.Controllers
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TradesStatisticModel>> GetStatistics(DateTimeOffset from, DateTimeOffset to)
+        public async Task<ActionResult<StatisticModel>> GetStatistics(DateTime from, DateTime to)
         {
             var userId = Convert.ToInt32(User.FindFirst
                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);

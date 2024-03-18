@@ -124,7 +124,7 @@ namespace TradingDiary.Services
                 }
                 return rr;
             });
-            return res;
+            return Math.Round(res, 2);
         }
     }
 }
