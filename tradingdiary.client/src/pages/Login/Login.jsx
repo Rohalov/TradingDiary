@@ -34,15 +34,16 @@ function Login() {
                             placeholder="Пароль" onChange={handleInputChange} required />
                     </div>
 
+                    <div className="forgot">
+                        <a href="#">Забули пароль?</a>
+                    </div>
+                    
                     {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                     <div className="submit-button">
                         <button type="submit">Увійти</button>
                     </div>
 
-                    <div className="forgot">
-                        <a href="#">Забули пароль?</a>
-                    </div>
 
                     <div className="register-link">
                         Немає облікового запису?

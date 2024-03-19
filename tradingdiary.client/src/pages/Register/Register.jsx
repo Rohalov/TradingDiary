@@ -19,37 +19,38 @@ function Register() {
 
     return (
         <div className="register-container">
-            <form onSubmit={handleSubmit}>
-                <h1>Register</h1>
-                <div className="input-box">
-                    <input type="text" name="userName" value={userData.userName}
-                        placeholder="Username" onChange={handleInputChange} required/>
-                </div>
+            <div className='register-modal'>
+                <form onSubmit={handleSubmit}>
+                    <h1>Register</h1>
+                    <div className="input-box">
+                        <input type="text" name="userName" value={userData.userName}
+                            placeholder="Ім'я користувача" onChange={handleInputChange} required />
+                    </div>
 
-                <div className="input-box">
-                    <input type="email" name="email" value={userData.email}
-                        placeholder="Email" onChange={handleInputChange} required/>
-                </div>
+                    <div className="input-box">
+                        <input type="email" name="email" value={userData.email}
+                            placeholder="Email" onChange={handleInputChange} required />
+                    </div>
 
-                <div className="input-box">
-                    <input type="password" name="password" value={userData.password}
-                        placeholder="Password" onChange={handleInputChange} required/>
-                </div>
+                    <div className="input-box">
+                        <input type="password" name="password" value={userData.password}
+                            placeholder="Пароль" onChange={handleInputChange} required />
+                    </div>
 
-                {errorMessage && <div className="error-message">{errorMessage}</div>}
-                
-                <div className="submit-button">
-                    <button type="submit">Register</button>
-                </div>
+                    {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-                <div className="register-link">
-                    <p>If you have an account, you can sing up.
+                    <div className="submit-button">
+                        <button type="submit">Зареєструватися</button>
+                    </div>
+
+                    <div className="login-link">
+                        Вже маєш обліковий запис?
                         <Link to='/login'>
-                            <a href="#">Login</a>
+                            <a href="#">Увійти</a>
                         </Link>
-                    </p>
-                </div>
-            </form>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 

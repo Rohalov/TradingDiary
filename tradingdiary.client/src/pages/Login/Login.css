@@ -41,8 +41,7 @@
 }
 
 .submit-button{
-    padding-top: 7%;
-    padding-bottom: 5%;
+    padding: 5% 0;
 }
 
 .submit-button button{
@@ -53,6 +52,15 @@
     font-size: 16px;
 }
 
-.register-link a{
-    display: block;
+.forgot{
+    text-align: end;
+    margin-right: 10%;
+}
+
+.forgot a{
+    font-size: 14px;
+}
+
+.register-link{
+    margin-top: 5%;
 }
