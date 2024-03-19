@@ -20,9 +20,38 @@ internal class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
+        ConfigureServices(builder);
+
+        var app = builder.Build();
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseCors("corsPolicy");
+
+        app.MapControllers();
+        app.MapFallbackToFile("/index.html");
+
+        app.Run();
+    }
+
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+
         builder.Services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore); ;
-       
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(option =>
         {
@@ -39,6 +68,8 @@ internal class Program
         builder.Services.AddScoped<ITradeService, TradeService>();
         builder.Services.AddScoped<IEntryFactorService, EntryFactorService>();
         builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+        builder.Services.AddScoped<ICalculationService, CalculationService>();
+
         builder.Services.AddDbContext<ApplicationDbContext>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -83,33 +114,10 @@ internal class Program
                               policy =>
                               {
                                   policy
-                                       .AllowAnyOrigin()
+                                       .WithOrigins("http://localhost:5173")
                                        .AllowAnyMethod()
                                        .AllowAnyHeader();
                               });
         });
-
-        var app = builder.Build();
-
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.UseCors("corsPolicy");
-
-        app.MapControllers();
-        app.MapFallbackToFile("/index.html");
-
-        app.Run();
     }
 }
