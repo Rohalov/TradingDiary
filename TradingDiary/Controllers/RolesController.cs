@@ -9,6 +9,7 @@ namespace TradingDiary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Policy = "RequireAdminRole")]
     public class RolesController : ControllerBase
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
@@ -25,102 +26,92 @@ namespace TradingDiary.Controllers
 
         [HttpPost]
         [Route("CreateRole")]
-        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<ApplicationRole>>> CreateRole(string name)
+        public async Task<ActionResult<List<ApplicationRole>>> CreateRole([FromQuery] string name)
         {
             var roleExist = await _roleManager.FindByNameAsync(name);
-            if (roleExist == null)
+            if (roleExist != null)
             {
-                var roleResult = await _roleManager.CreateAsync(
-                    _mapper.Map<ApplicationRole>(new RoleDTO { Name = name }));
-
-                if (roleResult.Succeeded)
-                {
-                    var role = await _roleManager.FindByNameAsync(name);
-                    return Created($"~api/items/{role.Id}", role);
-                }
-                else
-                {
-                    return BadRequest($"Role {name} has not been added successfully");
-                }
+                return BadRequest("Role already exist");
             }
-            return BadRequest("Role already exist");
+
+            var roleResult = await _roleManager.CreateAsync(
+                _mapper.Map<ApplicationRole>(new RoleDTO { Name = name }));
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest($"Role {name} has not been added successfully");
+            }
+
+            var role = await _roleManager.FindByNameAsync(name);
+            return Created($"~api/items/{role.Id}", role);
         }
 
         [HttpDelete]
         [Route("DeleteRole")]
-        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ApplicationRole>> DeleteRole(string name)
+        public async Task<ActionResult<ApplicationRole>> DeleteRole([FromQuery] string name)
         {
             var role = await _roleManager.FindByNameAsync(name);
-            if (role != null)
+            if (role == null)
             {
-                var roleResult = await _roleManager.DeleteAsync(role);
-
-                if (roleResult.Succeeded)
-                {
-                    return Ok(role);
-                }
-                else
-                {
-                    return BadRequest($"Role {name} has not been deleted successfully");
-                }
+                return NotFound("Role does not exist");
             }
-            return NotFound("Role does not exist");
+
+            var roleResult = await _roleManager.DeleteAsync(role);
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest($"Role {name} has not been deleted successfully");
+            }
+
+            return Ok(role);
         }
 
         [HttpPost]
         [Route("AddUserToRole")]
-        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddUserToRole(string userName, string roleName)
+        public async Task<ActionResult> AddUserToRole([FromQuery] string userName, [FromQuery] string roleName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var role = await _roleManager.FindByNameAsync(roleName);
-            if (role != null && user != null)
-            {
-                var result = await _userManager.AddToRoleAsync(user, roleName);
-                return Ok(result);
-            }
-            else if (role == null)
-            {
-                return BadRequest("Role does not exist");
-            }
-            else
+            if (user == null)
             {
                 return BadRequest("User does not exist");
             }
+
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                return BadRequest("Role does not exist");
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            return Ok(result);
         }
 
 
         [HttpDelete]
         [Route("RemoveUserFromRole")]
-        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RemoveUserFromRole(string userName, string roleName)
+        public async Task<ActionResult> RemoveUserFromRole([FromQuery] string userName, [FromQuery] string roleName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var role = await _roleManager.FindByNameAsync(roleName);
-            if (role != null && user != null)
-            {
-                var result = await _userManager.RemoveFromRoleAsync(user, roleName);
-                return Ok(result);
-            }
-            else if (role == null)
-            {
-                return BadRequest("Role does not exist");
-            }
-            else
+            if (user == null)
             {
                 return BadRequest("User does not exist");
             }
+
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                return BadRequest("Role does not exist");
+            }
+
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            return Ok(result);
         }
     }
 }

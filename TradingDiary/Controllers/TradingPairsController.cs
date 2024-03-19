@@ -18,24 +18,12 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("AllTradingPairs")]
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<TradingPair>>> GetAllTradingPairs()
         {
             var pairs = await _context.TradingPairs.ToListAsync();
             return Ok(pairs);
-        }
-
-        [HttpPut]
-        [Route("UpdateTradingPairs")]
-        //[Authorize(Policy = "RequireAdminRole")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<TradingPair>>> UpdateTradingPairs()
-        {
-            TradingPairsUpdater updater = new TradingPairsUpdater(_context);
-            await updater.Update();
-            return Ok("Pairs was updated");
         }
     }
 }

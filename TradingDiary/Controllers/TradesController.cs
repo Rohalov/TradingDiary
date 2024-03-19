@@ -8,6 +8,7 @@ namespace TradingDiary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "RequireUserRole")]
     public class TradesController : ControllerBase
     {
         private ITradeService _tradeService;
@@ -18,14 +19,11 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllUserTrades")]
-        [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<Trade>>> GetAllUserTrades()
         {
-            var userId = Convert.ToInt32(User.FindFirst
-                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var userId = GetUserIdByClaims();
 
             var trades = await _tradeService.GetAllUserTrades(userId);
             if (trades == null)
@@ -36,24 +34,19 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Route("AddTrade")]
-        [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Trade>> AddTrade(TradeDTO newTrade)
+        public async Task<ActionResult<Trade>> AddTrade([FromBody] TradeDTO newTrade)
         {
-            var userId = Convert.ToInt32(User.FindFirst
-                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var userId = GetUserIdByClaims();
 
             var trade = await _tradeService.AddTrade(userId, newTrade);
             return Created($"~api/trades/{trade.Id}", trade);
         }
 
         [HttpPut]
-        [Route("UpdateTrade")]
-        [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Trade>> UpdateTrade(int id, TradeDTO updatedTrade)
+        public async Task<ActionResult<Trade>> UpdateTrade([FromQuery] int id, [FromBody] TradeDTO updatedTrade)
         {
             var dbtrade = await _tradeService.UpdateTrade(id, updatedTrade);
             if (dbtrade == null)
@@ -64,11 +57,9 @@ namespace TradingDiary.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteTrade")]
-        [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteTrade(int id)
+        public async Task<ActionResult> DeleteTrade([FromQuery] int id)
         {
             var trade = await _tradeService.DeleteTrade(id);
             if (trade == null)
@@ -78,14 +69,12 @@ namespace TradingDiary.Controllers
             return Ok("Trade was deleted");
         }
 
-        [HttpPost]
-        [Route("CountRiskReward")]
-        [Authorize(Policy = "RequireUserRole")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> CountRiskReward(CounterData data)
+        private int GetUserIdByClaims()
         {
-            var rr = await _tradeService.CountRiskReward(data);
-            return Ok(rr);
+            var userId = Convert.ToInt32(User.FindFirst
+                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+
+            return userId;
         }
     }
 }

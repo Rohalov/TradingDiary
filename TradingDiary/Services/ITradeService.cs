@@ -9,6 +9,5 @@ namespace TradingDiary.Services
         Task<Trade> AddTrade(int userId, TradeDTO newTrade);
         Task<Trade> UpdateTrade(int id , TradeDTO updatedTrade);
         Task<Trade> DeleteTrade(int id);
-        Task<decimal> CountRiskReward(CounterData data);
     }
 }

@@ -9,6 +9,7 @@ namespace TradingDiary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
@@ -18,12 +19,10 @@ namespace TradingDiary.Controllers
             _authenticationService = authenticationService;
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("register")]
+        [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Register(RegisterRequest request)
+        public async Task<ActionResult> Register([FromBody] RegisterRequest request)
         {
             var user = await _authenticationService.Register(request);
             if (user == null)
@@ -34,12 +33,10 @@ namespace TradingDiary.Controllers
         }
 
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("login")]
+        [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Login(UserDTO request)
+        public async Task<ActionResult> Login([FromBody] UserDTO request)
         {
             var jwtToken = await _authenticationService.Login(request);
             if (jwtToken == null)
