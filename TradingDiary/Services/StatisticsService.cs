@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TradingDiary.Data;
 using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 
 namespace TradingDiary.Services
 {

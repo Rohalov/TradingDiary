@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using TradingDiary.Services;
 using Microsoft.AspNetCore.Mvc;
 using TradingDiary.Models.DTO;
-using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 
 namespace TradingDiary.Controllers
 {

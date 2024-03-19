@@ -1,4 +1,4 @@
-﻿namespace TradingDiary.Models.Entities
+﻿namespace TradingDiary.Models.Services
 {
     public class RegisterRequest
     {

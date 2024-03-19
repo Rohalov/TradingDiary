@@ -1,8 +1,10 @@
-﻿namespace TradingDiary.Models.Entities
+﻿using TradingDiary.Models.Entities;
+
+namespace TradingDiary.Models.Services
 {
     public class StatisticModel
     {
-        public DateTime From {  get; set; }
+        public DateTime From { get; set; }
         public DateTime To { get; set; }
         public int Total { get; set; }
         public int Profit { get; set; }

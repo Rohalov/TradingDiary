@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 using TradingDiary.Services;
 
 namespace TradingDiary.Controllers
