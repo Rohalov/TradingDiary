@@ -1,10 +1,75 @@
-.container{
-    margin-top: 100px;
+.trades-container{
+    margin-top: 84px;
+}
+
+.table{
+    width: 100%;
+    font-size: 14px;
+    border-spacing: 0;
+}
+
+.table thead{
+    position: sticky;
+    top: 0;
+    box-sizing: border-box;
+}
+
+#text-start{
+    text-align: start;
+}
+
+#text-end{
+    text-align: end;
+}
+
+.table thead th{
+    background-color: #0D1421;
+    font-size: 12px;
+}
+
+.table th{
+    padding: 5px;
+}
+
+.table td{
+    vertical-align: middle;
+    padding: 5px 10px;
+}
+
+.table th, td{
+    border-bottom: 1px solid #323546;
+}
+
+.table tr:hover{
+    background-color: #222531;
+}
+
+.edit-btn{
+    padding: 5px 5px 0;
+    border: 0;
+    height: 24px;
+    background-color: rgba(0,0,0,0);
+}
+
+.delete-btn{
+    padding: 5px 5px 0;
+    border: 0;
+    height: 24px;
+    background-color: rgba(0,0,0,0);
+}
+
+.edit-btn:hover{
+    color: orange;
+}
+ 
+.delete-btn:hover{
+    color: red;
 }
 
 .add-button button{
     width: 100%;
     border-radius: 0;
+    background-color: #323546;
 }
 
 .modal-container{

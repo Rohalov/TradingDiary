@@ -43,33 +43,41 @@ function Trades() {
         <table className="table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Торгова пара</th>
-                    <th>Напрямок</th>
-                    <th>Дата</th>
-                    <th>Фактори входу</th>
-                    <th>RR</th>
-                    <th>Ризик, %</th>
-                    <th>Результат</th>
-                    <th>Прибуток, %</th>
-                    <th></th>
+                    <th className="stickyTop">#</th>
+                    <th className="stickyTop" id='text-start'>Торгова пара</th>
+                    <th className="stickyTop">Напрямок</th>
+                    <th className="stickyTop">Дата</th>
+                    <th className="stickyTop">Фактори входу</th>
+                    <th className="stickyTop" id='text-end'>RR</th>
+                    <th className="stickyTop" id='text-end'>Ризик, %</th>
+                    <th className="stickyTop" >Результат</th>
+                    <th className="stickyTop" id='text-end'>Прибуток, %</th>
+                    <th className="stickyTop"></th>
                 </tr>
             </thead>
             <tbody>
                 {trades.map((trade, index) =>
                     <tr key={trade.id}>
                         <td>{index + 1}</td>
-                        <td>{trade.pair}</td>
-                        <td>{directionValues[trade.direction]}</td>
+                        <td id='text-start'>{trade.pair}</td>
+                        <td style={{ color: trade.direction == 0 ? '#16c784' : '#ea3943' }}>{directionValues[trade.direction]}</td>
                         <td>{trade.date.split('T')[0]}</td>
                         <td>{trade.entryFactors.map(factor => factor.name)}</td>
-                        <td>{trade.riskReward}</td>
-                        <td>{trade.riskPercent}</td>
-                        <td>{resultValues[trade.result]}</td>
-                        <td>{trade.profitLoss}</td>
-                        <td>
-                            <button className="edit-btn" onClick={() => handleEditRow(index)}>edit</button>
-                            <button className="delete-btn" onClick={() => { setCurrentTradeId(trade.id); setConfirmModalOpen(true); }}>dlt</button>
+                        <td id='text-end'>{trade.riskReward}</td>
+                        <td id='text-end'>{trade.riskPercent}</td>
+                        <td style={{ color: trade.result == 0 ? '#16c784' : trade.result == 1 ? '#ea3943' : '#FFF' }}>{resultValues[trade.result]}</td>
+                        <td id='text-end'>{trade.profitLoss}</td>
+                        <td id='text-end'>
+                            <button className="edit-btn" onClick={() => handleEditRow(index)}>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                </svg>
+                            </button>
+                            <button className="delete-btn" onClick={() => { setCurrentTradeId(trade.id); setConfirmModalOpen(true); }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24px" width="24px" viewBox="0 0 24 24" class="close-button">
+                                    <path d="M18 6L6 18M18 18L6 6" stroke="currentColor" stroke-width="1" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 )}
@@ -86,9 +94,9 @@ function Trades() {
         </div>
 
     return (
-        <div className='container'>
+        <div className='trades-container'>
             <div className="top-header-block">
-                <Navbar/>
+                <Navbar />
             </div>
 
             <div className="main-section">
@@ -107,7 +115,7 @@ function Trades() {
             />}
 
             <div className="riskreward-counter">
-                <Counter />
+
             </div>
         </div>
     )
@@ -121,7 +129,7 @@ function Trades() {
     }
 
     async function deleteTrade() {
-        const responce = await fetch(`/api/Trades/DeleteTrade?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades?id=${currentTradeId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -132,7 +140,7 @@ function Trades() {
     }
 
     async function addTrade(trade) {
-        const responce = await fetch('/api/Trades/AddTrade', {
+        const responce = await fetch('/api/Trades', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -145,7 +153,7 @@ function Trades() {
     }
 
     async function updateTrade(trade) {
-        const responce = await fetch(`/api/Trades/UpdateTrade?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades?id=${currentTradeId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -159,7 +167,7 @@ function Trades() {
 
     async function getTrades() {
         console.log("getTrades");
-        const responce = await fetch('/api/Trades/GetAllUserTrades', {
+        const responce = await fetch('/api/Trades', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

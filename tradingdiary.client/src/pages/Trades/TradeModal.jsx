@@ -143,7 +143,7 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
     }
 
     async function getEntryFactors() {
-        const responce = await fetch('/api/EntryFactors/GetAllUserEntryFactors', {
+        const responce = await fetch('/api/EntryFactors', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -157,7 +157,7 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
     }
 
     async function getAllTradingPair() {
-        const responce = await fetch('/api/TradingPairs/AllTradingPairs', {
+        const responce = await fetch('/api/TradingPairs', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
