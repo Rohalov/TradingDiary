@@ -48,7 +48,7 @@ function Login() {
                     <div className="register-link">
                         Немає облікового запису?
                         <Link to='/register'>
-                            <a href="#">Зареєструватися</a>
+                            <a>Зареєструватися</a>
                         </Link>
                     </div>
                 </form>

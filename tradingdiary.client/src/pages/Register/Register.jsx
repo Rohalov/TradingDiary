@@ -46,7 +46,7 @@ function Register() {
                     <div className="login-link">
                         Вже маєш обліковий запис?
                         <Link to='/login'>
-                            <a href="#">Увійти</a>
+                            <a>Увійти</a>
                         </Link>
                     </div>
                 </form>
