@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
-import './TradeModal.css'
+import './TradeModal.css';
 
 function TradeModal({ closeModal, onSubmit, defaultValue }) {
     const [entryFactors, setEntryFactors] = useState([]);

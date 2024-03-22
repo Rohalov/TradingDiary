@@ -1,0 +1,38 @@
+.chart-container{
+    min-width: 300px;
+    height: 320px;
+    width: 100%;
+}
+
+.highcharts-background{
+    fill: rgba(0, 0, 0, 0)
+}
+
+.highcharts-container{
+    height: 320px!important;
+}
+
+.highcharts-credits{
+    visibility: hidden;
+}
+
+.highcharts-title{
+    font-family: inherit;
+    fill: #fff!important;
+}
+
+.highcharts-data-labels text{
+    fill: #fff!important;
+}
+
+.highcharts-data-labels tspan{
+    visibility: hidden;
+}
+
+.highcharts-legend-item text{
+    fill: #fff!important;
+}
+
+.highcharts-legend-item text:hover{
+    fill: #535bf2!important;
+}

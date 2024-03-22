@@ -11,6 +11,6 @@
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="src\assets\" />
-    <Folder Include="src\pages\Se\" />
+    <Folder Include="src\pages\Statistics\Charts\" />
   </ItemGroup>
 </Project>

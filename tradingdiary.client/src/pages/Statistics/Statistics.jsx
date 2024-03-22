@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import './Statistics.css'
 import Navbar from '../../components/Navbar/Navbar';
+import StackedBarChar from './Charts/StackedBarChart';
 
 function Statistics() {
     const [stat, setStat] = useState("");
@@ -45,64 +46,69 @@ function Statistics() {
             <Navbar />
 
             <div className="menu">
-                <button onClick={getStatisticForWeek}>Тиждень</button>
-                <button onClick={getStatisticForMonth}>Місяць</button>
+                <button onClick={getStatisticForWeek}>Цей тиждень</button>
+                <button onClick={getStatisticForMonth}>Цей місяць</button>
                 <button onClick={getAllTimeStat}>Всі угоди</button>
                 <button onClick={() => setDateFormOpen(true)}>Обрати період</button>
                 {dateFormOpen && dateForm}
             </div>
 
-            <div className="main">
-                <div>
-
+            <div className="">
+                <div className="statistic-grid">
+                    <section>
+                        <div id='stackedbar' className='section-block'>
+                            <StackedBarChar
+                                profit={stat.profit}
+                                loss={stat.loss}
+                            />
+                        </div>
+                    </section>
+                    <section>
+                        <div className='section-grid'>
+                            <section>
+                                <div className=''>
+                                    <div className="info-block">
+                                        
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div className='section-block'>
+                                    <div className="info-block">
+                                       
+                                    </div>
+                               </div>
+                            </section>
+                        </div>
+                    </section>
+                    <section>
+                        <div className="info-block">
+                            Найгірша угода
+                        </div>
+                    </section>
+                    <section>
+                        <div className="info-block" id="two">
+                            Середній rr: {stat.avgRiskReward}
+                        </div>
+                        <div className="info-block" id="two">
+                            Середній ризик: {stat.avgRisk}
+                        </div>
+                    </section>
+                    <section>
+                        <div className="info-block" id='two'>
+                            Найкращий актив: {stat.bestTradingPair}
+                        </div>
+                        <div className="info-block" id='two'>
+                            Найгірший актив: {stat.worstTradingPair}
+                        </div>
+                    </section>
                 </div>
-                <section>
-                    <div className="info-block">
-                        Загальна кількість
-                        {stat.total}
-                    </div>
-                    <div className="info-block">
-                        Успішних: {stat.profit}
-                    </div>
-                    <div className="info-block">
-                        Збиткових: {stat.loss}
-                    </div>
-                    <div className="info-block">
-                        P&L: {stat.profitLoss}
-                    </div>
-                </section>
-                <section>
-                    <div className="info-block">
-                        Найкраща угода
-                    </div>
-                </section>
-                <section>
-                    <div className="info-block">
-                        Найгірша угода
-                    </div>
-                </section>
-                <section>
-                    <div className="info-block" id="two">
-                        Середній rr: {stat.avgRiskReward}
-                    </div>
-                    <div className="info-block" id="two">
-                        Середній ризик: {stat.avgRisk}
-                    </div>
-                </section>
-                <section>
-                    <div className="info-block" id='two'>
-                        Найкращий актив: {stat.bestTradingPair}
-                    </div>
-                    <div className="info-block" id='two'>
-                        Найгірший актив: {stat.worstTradingPair}
-                    </div>
-                </section>
             </div>
         </div>
     )
 
     async function getCustomStat() {
-        const responce = await fetch(`/api/Statistics/GetStatistic?from=${formData.from}&to=${formData.to}`, {
+        const responce = await fetch(`/api/Statistics/Custom?from=${formData.from}&to=${formData.to}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -116,7 +122,7 @@ function Statistics() {
     }
 
     async function getStatisticForWeek() {
-        const responce = await fetch('/api/Statistics/GetStatisticsForWeek', {
+        const responce = await fetch('/api/Statistics/ForWeek', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -130,7 +136,7 @@ function Statistics() {
     }
 
     async function getStatisticForMonth() {
-        const responce = await fetch('/api/Statistics/GetStatisticsForMonth', {
+        const responce = await fetch('/api/Statistics/ForMonth', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -144,7 +150,7 @@ function Statistics() {
     }
 
     async function getAllTimeStat() {
-        const responce = await fetch('/api/Statistics/GetStatisticsAllTime', {
+        const responce = await fetch('/api/Statistics/AllTime', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
