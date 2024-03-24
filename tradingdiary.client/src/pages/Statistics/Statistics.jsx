@@ -63,52 +63,69 @@ function Statistics() {
                             />
                         </div>
                     </section>
+
                     <section>
                         <div className='section-grid'>
                             <section>
                                 <div className='section-block'>
                                     <div className="info-block">
-                                        P&L
-                                        {stat.profitLoss}
+                                        <div className='base-text'>
+                                            Загальна кількість угод
+                                        </div>
+                                        <div>
+                                            {stat.total}
+                                        </div>
                                     </div>
                                 </div>
                             </section>
+
                             <section>
                                 <div className='section-block'>
                                     <div className="info-block">
-                                       
+                                        <div className='base-text'>
+                                            Результат
+                                        </div>
+                                        <div>
+                                            {stat.profitLoss}%
+                                        </div>
                                     </div>
-                               </div>
+                                </div>
                             </section>
+
                             <section>
                                 <div className='section-block'>
                                     <div className="info-block">
-                                       
+                                        <div className='base-text'>
+                                            Середній rr
+                                        </div>
+                                        <div>
+                                            {stat.avgRiskReward}
+                                        </div>
                                     </div>
-                               </div>
+                                </div>
                             </section>
+
                             <section>
                                 <div className='section-block'>
                                     <div className="info-block">
-                                       
+                                        <div className='base-text'>
+                                            Середній ризик на угоду
+                                        </div>
+                                        <div>
+                                            {stat.avgRisk}
+                                        </div>
                                     </div>
-                               </div>
+                                </div>
                             </section>
                         </div>
                     </section>
+
                     <section>
                         <div className="info-block">
                             Найгірша угода
                         </div>
                     </section>
-                    <section>
-                        <div className="info-block" id="two">
-                            Середній rr: {stat.avgRiskReward}
-                        </div>
-                        <div className="info-block" id="two">
-                            Середній ризик: {stat.avgRisk}
-                        </div>
-                    </section>
+
                     <section>
                         <div className="info-block" id='two'>
                             Найкращий актив: {stat.bestTradingPair}

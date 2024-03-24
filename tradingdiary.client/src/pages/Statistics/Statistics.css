@@ -2,6 +2,27 @@
     margin-top: 100px;
 }
 
+.main-content{
+    margin-top: 20px;
+}
+
+.menu{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.menu button{
+    border: 0;
+    background-color: rgb(50, 53, 70);
+    width: 15%;
+    padding: 5px;
+}
+
+.menu button:hover{
+    background: rgb(34, 37, 49);
+}
+
 .statistic-grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -25,6 +46,10 @@
 
 .info-block{
     height: 120px;
+}
+
+.base-text{
+    font-weight: bold;
 }
 
 .date-container{
