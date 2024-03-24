@@ -53,7 +53,7 @@ function Statistics() {
                 {dateFormOpen && dateForm}
             </div>
 
-            <div className="">
+            <div className="main-content">
                 <div className="statistic-grid">
                     <section>
                         <div id='stackedbar' className='section-block'>
@@ -66,11 +66,26 @@ function Statistics() {
                     <section>
                         <div className='section-grid'>
                             <section>
-                                <div className=''>
+                                <div className='section-block'>
                                     <div className="info-block">
-                                        
+                                        P&L
+                                        {stat.profitLoss}
                                     </div>
                                 </div>
+                            </section>
+                            <section>
+                                <div className='section-block'>
+                                    <div className="info-block">
+                                       
+                                    </div>
+                               </div>
+                            </section>
+                            <section>
+                                <div className='section-block'>
+                                    <div className="info-block">
+                                       
+                                    </div>
+                               </div>
                             </section>
                             <section>
                                 <div className='section-block'>
