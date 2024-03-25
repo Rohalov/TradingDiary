@@ -95,7 +95,7 @@ namespace TradingDiary.Services
             {
                 var profitTrades = trades.Where(t => t.Result == ResultEnum.Profit).Count();
                 var lossTrades = trades.Where(t => t.Result == ResultEnum.Loss).Count();
-                var pl = trades.Select(t => t.ProfitLoss).Average();
+                var pl = trades.Select(t => t.ProfitLoss).Sum();
                 var bestTrade = trades.Where(t => t.ProfitLoss == trades.Select(t => t.ProfitLoss).Max()).FirstOrDefault();
                 var worstTrade = trades.Where(t => t.ProfitLoss == trades.Select(t => t.ProfitLoss).Min()).FirstOrDefault();
                 var avgRR = trades.Select(t => t.RiskReward).Average();
@@ -115,8 +115,7 @@ namespace TradingDiary.Services
                     Total = trades.Count,
                     Profit = profitTrades,
                     Loss = lossTrades,
-                    //convert to percentage
-                    ProfitLoss = Math.Round(pl, 3) * 100,
+                    ProfitLoss = Math.Round(pl, 3),
                     BestTrade = bestTrade,
                     WorstTrade = worstTrade,
                     AvgRiskReward = Math.Round(avgRR, 3),

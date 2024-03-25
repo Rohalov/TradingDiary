@@ -121,17 +121,28 @@ function Statistics() {
                     </section>
 
                     <section>
-                        <div className="info-block">
-                            Найгірша угода
+                        <div className="section-block">
+                            <div className="info-block">
+                                <div className='base-text'>
+                                    Найкраща угода
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
                         </div>
                     </section>
 
                     <section>
-                        <div className="info-block" id='two'>
-                            Найкращий актив: {stat.bestTradingPair}
-                        </div>
-                        <div className="info-block" id='two'>
-                            Найгірший актив: {stat.worstTradingPair}
+                        <div className="section-block">
+                            <div className="info-block">
+                                <div className='base-text'>
+                                    Найгірша угода
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>

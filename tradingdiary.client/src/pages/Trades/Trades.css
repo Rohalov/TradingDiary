@@ -44,25 +44,19 @@
     background-color: #222531;
 }
 
-.edit-btn{
-    padding: 5px 5px 0;
+.table-btn{
+    display: inline-block;
     border: 0;
-    height: 24px;
+    padding: 5px;
+    height: 34px;
     background-color: rgba(0,0,0,0);
 }
 
-.delete-btn{
-    padding: 5px 5px 0;
-    border: 0;
-    height: 24px;
-    background-color: rgba(0,0,0,0);
-}
-
-.edit-btn:hover{
+#edit-btn:hover{
     color: orange;
 }
  
-.delete-btn:hover{
+#delete-btn:hover{
     color: red;
 }
 

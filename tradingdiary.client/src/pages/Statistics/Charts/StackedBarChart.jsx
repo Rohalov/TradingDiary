@@ -3,7 +3,7 @@ import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import './StackedBarChart.css';
 
-function StackedBarChar({ profit, loss }) {
+function StackedBarChar(props) {
 
     const options = {
         colors: [
@@ -42,11 +42,11 @@ function StackedBarChar({ profit, loss }) {
             data: [
                 {
                     name: 'Збиткові',
-                    y: loss 
+                    y: props.loss 
                 },
                 {
                     name: 'Прибуткові',
-                    y: profit
+                    y: props.profit
                 }
             ]
         }]
