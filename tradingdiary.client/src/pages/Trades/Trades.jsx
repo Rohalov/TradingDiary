@@ -3,6 +3,8 @@ import { AuthContext } from '../../contexts/AuthContext';
 import TradeModal from './TradeModal';
 import Counter from './Counter';
 import Navbar from '../../components/Navbar/Navbar';
+import directionValues from '../../data/directions.json'
+import resultValues from '../../data/results.json'
 import './Trades.css';
 
 function Trades() {
@@ -13,8 +15,6 @@ function Trades() {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [token,] = useContext(AuthContext);
 
-    const directionValues = { 0: "Long", 1: "Short" };
-    const resultValues = { 0: "Прибуток", 1: "Збиток", 2: "Беззбиток" };
 
     useEffect(() => {
         getTrades();
