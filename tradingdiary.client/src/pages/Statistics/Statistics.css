@@ -45,11 +45,30 @@
 }
 
 .info-block{
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    box-sizing: border-box;
     height: 120px;
 }
 
 .base-text{
-    font-weight: bold;
+    text-align: start;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.main-text{
+    text-align: start;
+    font-size: 30px;
+}
+
+.trade-card{
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    box-sizing: border-box;
+    height: 120px;
 }
 
 .date-container{

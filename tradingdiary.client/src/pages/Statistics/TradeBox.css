@@ -1,0 +1,31 @@
+.trade-box {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+
+.grid-box {
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+
+}
+
+.grid-item {
+    font-size: 18px;
+    text-align: start;
+}
+
+.title-text{
+    font-size: 16px;
+    color:  rgb(132, 142, 156);
+}
+
+#text-center{
+    text-align: center;
+}

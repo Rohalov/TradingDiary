@@ -3,6 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './Statistics.css'
 import Navbar from '../../components/Navbar/Navbar';
 import StackedBarChar from './Charts/StackedBarChart';
+import TradeBox from './TradeBox';
 
 function Statistics() {
     const [stat, setStat] = useState("");
@@ -72,7 +73,7 @@ function Statistics() {
                                         <div className='base-text'>
                                             Загальна кількість угод
                                         </div>
-                                        <div>
+                                        <div className='main-text'>
                                             {stat.total}
                                         </div>
                                     </div>
@@ -85,7 +86,7 @@ function Statistics() {
                                         <div className='base-text'>
                                             Результат
                                         </div>
-                                        <div>
+                                        <div className='main-text'>
                                             {stat.profitLoss}%
                                         </div>
                                     </div>
@@ -96,9 +97,9 @@ function Statistics() {
                                 <div className='section-block'>
                                     <div className="info-block">
                                         <div className='base-text'>
-                                            Середній rr
+                                            Середній RR
                                         </div>
-                                        <div>
+                                        <div className='main-text'>
                                             {stat.avgRiskReward}
                                         </div>
                                     </div>
@@ -111,8 +112,8 @@ function Statistics() {
                                         <div className='base-text'>
                                             Середній ризик на угоду
                                         </div>
-                                        <div>
-                                            {stat.avgRisk}
+                                        <div className='main-text'>
+                                            {stat.avgRisk}%
                                         </div>
                                     </div>
                                 </div>
@@ -122,12 +123,14 @@ function Statistics() {
 
                     <section>
                         <div className="section-block">
-                            <div className="info-block">
+                            <div className="trade-card">
                                 <div className='base-text'>
                                     Найкраща угода
                                 </div>
-                                <div>
-
+                                <div className='result-block'>
+                                    {stat != "" &&
+                                        <TradeBox trade={stat.bestTrade} />
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -135,12 +138,14 @@ function Statistics() {
 
                     <section>
                         <div className="section-block">
-                            <div className="info-block">
+                            <div className="trade-card">
                                 <div className='base-text'>
                                     Найгірша угода
                                 </div>
-                                <div>
-
+                                <div className='result-block'>
+                                    {stat != "" &&
+                                        <TradeBox trade={stat.worstTrade} />
+                                    }
                                 </div>
                             </div>
                         </div>
