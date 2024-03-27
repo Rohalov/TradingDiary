@@ -15,8 +15,10 @@ internal class Program
     private static void Main(string[] args)
     {
         using var database = new ApplicationDbContext();
-
         database.Database.EnsureCreated();
+
+        var tradingPairsUpdater = new TradingPairsUpdater(database);
+        //tradingPairsUpdater.Start();
 
         var builder = WebApplication.CreateBuilder(args);
 

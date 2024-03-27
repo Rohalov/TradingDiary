@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using TradingDiary.Models.Entities;
 using TradingDiary.Services.Exchanges;
 
@@ -7,20 +8,38 @@ namespace TradingDiary.Data
     public class TradingPairsUpdater
     {
         private ApplicationDbContext _context;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public TradingPairsUpdater(ApplicationDbContext context)
         {
             _context = context;
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public async Task Update()
+        public void Start()
+        {
+            Task.Run(async () => await UpdateAsync(_cancellationTokenSource.Token));
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource?.Cancel();
+        }
+
+
+        public async Task UpdateAsync(CancellationToken cancellationToken)
         {
             var binance = new Binance();
-            var pairs = await binance.GetPairs();
-            var allData = await _context.TradingPairs.ToListAsync();
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var pairs = await binance.GetPairs();
+                var allData = await _context.TradingPairs.ToListAsync();
 
-            await AddDifference(pairs, allData);
-            RemoveDifference(allData, pairs);
+                await AddDifference(pairs, allData);
+                RemoveDifference(allData, pairs);
+
+                await Task.Delay(TimeSpan.FromDays(1), cancellationToken);
+            }
         }
 
         private async Task AddDifference(List<TradingPair> allData, List<TradingPair> pairs)
@@ -30,7 +49,7 @@ namespace TradingDiary.Data
             List<TradingPair> needAdd = new List<TradingPair>();
             foreach (var pair in newPairs)
             {
-                needAdd.Add(new TradingPair { Name = pair});
+                needAdd.Add(new TradingPair { Name = pair });
             }
             await _context.AddRangeAsync(needAdd);
             await _context.SaveChangesAsync();
