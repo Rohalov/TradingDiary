@@ -43,10 +43,10 @@ namespace TradingDiary.Controllers
             return Created($"~api/trades/{trade.Id}", trade);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Trade>> UpdateTrade([FromQuery] int id, [FromBody] TradeDTO updatedTrade)
+        public async Task<ActionResult<Trade>> UpdateTrade([FromRoute] int id, [FromBody] TradeDTO updatedTrade)
         {
             var dbtrade = await _tradeService.UpdateTrade(id, updatedTrade);
             if (dbtrade == null)
@@ -56,10 +56,10 @@ namespace TradingDiary.Controllers
             return Ok(dbtrade);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteTrade([FromQuery] int id)
+        public async Task<ActionResult> DeleteTrade([FromRoute] int id)
         {
             var trade = await _tradeService.DeleteTrade(id);
             if (trade == null)

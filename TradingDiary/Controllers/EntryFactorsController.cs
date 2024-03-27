@@ -43,10 +43,10 @@ namespace TradingDiary.Controllers
             return Created($"~api/entryfactors/{entryFactor.Id}", entryFactor);
         }
 
-        [HttpPut]
+        [HttpPut("{factorId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EntryFactor>> UpdateEntryFactor([FromQuery] int factorId, [FromBody] EntryFactorDTO updatedFactor)
+        public async Task<ActionResult<EntryFactor>> UpdateEntryFactor([FromRoute] int factorId, [FromBody] EntryFactorDTO updatedFactor)
         {
             var userId = GetUserIdByClaims();
 
@@ -58,10 +58,10 @@ namespace TradingDiary.Controllers
             return Ok(dbFactor);
         }
 
-        [HttpDelete]
+        [HttpDelete("{factorId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteEntryFactor([FromQuery] int factorId)
+        public async Task<ActionResult> DeleteEntryFactor([FromRoute] int factorId)
         {
             var userId = GetUserIdByClaims();
 
