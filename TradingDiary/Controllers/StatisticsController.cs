@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TradingDiary.Models.Services;
 using TradingDiary.Services;
 
@@ -23,7 +24,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsForWeek()
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var result = await _statisticsService.GetStatisticsForWeek(userId);
             if (result == null)
@@ -39,7 +40,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsForMonth()
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var result = await _statisticsService.GetStatisticsForMonth(userId);
             if (result == null)
@@ -55,7 +56,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsAllTime()
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var result = await _statisticsService.GetStatisticsAllTime(userId);
             if (result == null)
@@ -71,7 +72,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatistics([FromQuery] DateTime from, [FromQuery] DateTime to)
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var result = await _statisticsService.GetCustomStatistics(userId, from, to);
             if (result == null)
@@ -79,14 +80,6 @@ namespace TradingDiary.Controllers
                 return NotFound("Trades not found");
             }
             return Ok(result);
-        }
-
-        private int GetUserIdByClaims()
-        {
-            var userId = Convert.ToInt32(User.FindFirst
-                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-            return userId;
         }
     }
 }

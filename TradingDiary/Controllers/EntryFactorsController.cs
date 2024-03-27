@@ -23,7 +23,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<EntryFactor>>> GetAllUserEntryFactors()
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var entryFactors = await _entryFactorService.GetAllUserEntryFactors(userId);
             if (entryFactors == null)
@@ -37,7 +37,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<EntryFactor>> AddEntryFactor([FromBody] EntryFactorDTO newEntryFactor)
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var entryFactor = await _entryFactorService.AddEntryFactor(userId, newEntryFactor);
             return Created($"~api/entryfactors/{entryFactor.Id}", entryFactor);
@@ -48,7 +48,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EntryFactor>> UpdateEntryFactor([FromRoute] int factorId, [FromBody] EntryFactorDTO updatedFactor)
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var dbFactor = await _entryFactorService.UpdateEntryFactor(userId, factorId, updatedFactor);
             if (dbFactor == null)
@@ -63,7 +63,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteEntryFactor([FromRoute] int factorId)
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var entryFactor = await _entryFactorService.DeleteEntryFactor(userId, factorId);
             if (entryFactor == null)
@@ -71,14 +71,6 @@ namespace TradingDiary.Controllers
                 NotFound("Factor does not exist");
             }
             return Ok(entryFactor);
-        }
-
-        private int GetUserIdByClaims()
-        {
-            var userId = Convert.ToInt32(User.FindFirst
-                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-            return userId;
         }
     }
 }

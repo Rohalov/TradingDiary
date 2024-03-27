@@ -23,7 +23,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<Trade>>> GetAllUserTrades()
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var trades = await _tradeService.GetAllUserTrades(userId);
             if (trades == null)
@@ -37,7 +37,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Trade>> AddTrade([FromBody] TradeDTO newTrade)
         {
-            var userId = GetUserIdByClaims();
+            var userId = this.GetUserIdByClaims();
 
             var trade = await _tradeService.AddTrade(userId, newTrade);
             return Created($"~api/trades/{trade.Id}", trade);
@@ -67,14 +67,6 @@ namespace TradingDiary.Controllers
                 NotFound("Trade does not exist");
             }
             return Ok(trade);
-        }
-
-        private int GetUserIdByClaims()
-        {
-            var userId = Convert.ToInt32(User.FindFirst
-                (System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-            return userId;
         }
     }
 }
