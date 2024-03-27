@@ -94,7 +94,7 @@ namespace TradingDiary.Controllers
 
         [HttpDelete]
         [Route("remove-user-from-role")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RemoveUserFromRole([FromQuery] string userName, [FromQuery] string roleName)
         {
@@ -110,8 +110,8 @@ namespace TradingDiary.Controllers
                 return BadRequest("Role does not exist");
             }
 
-            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
-            return Ok(result);
+            await _userManager.RemoveFromRoleAsync(user, roleName);
+            return NoContent();
         }
     }
 }

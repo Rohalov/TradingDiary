@@ -66,7 +66,7 @@ namespace TradingDiary.Controllers
             {
                 NotFound("Trade does not exist");
             }
-            return Ok("Trade was deleted");
+            return Ok(trade);
         }
 
         private int GetUserIdByClaims()

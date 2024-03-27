@@ -70,7 +70,7 @@ namespace TradingDiary.Controllers
             {
                 NotFound("Factor does not exist");
             }
-            return Ok("Factor was deleted");
+            return Ok(entryFactor);
         }
 
         private int GetUserIdByClaims()
