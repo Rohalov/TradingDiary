@@ -18,7 +18,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Route("CountRiskReward")]
+        [Route("count-riskreward")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> CountRiskReward([FromBody] CounterData data)
         {

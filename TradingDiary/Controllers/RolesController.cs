@@ -25,7 +25,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Route("CreateRole")]
+        [Route("create-role")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<List<ApplicationRole>>> CreateRole([FromQuery] string name)
@@ -48,7 +48,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteRole")]
+        [Route("delete-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -70,7 +70,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Route("AddUserToRole")]
+        [Route("add-user-to-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> AddUserToRole([FromQuery] string userName, [FromQuery] string roleName)
@@ -93,7 +93,7 @@ namespace TradingDiary.Controllers
 
 
         [HttpDelete]
-        [Route("RemoveUserFromRole")]
+        [Route("remove-user-from-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RemoveUserFromRole([FromQuery] string userName, [FromQuery] string roleName)

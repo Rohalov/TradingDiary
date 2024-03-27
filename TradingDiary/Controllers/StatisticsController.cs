@@ -18,7 +18,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("ForWeek")]
+        [Route("for-week")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsForWeek()
@@ -34,7 +34,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("ForMonth")]
+        [Route("for-month")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsForMonth()
@@ -50,7 +50,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("AllTime")]
+        [Route("all-time")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatisticsAllTime()
@@ -66,7 +66,7 @@ namespace TradingDiary.Controllers
         }
 
         [HttpGet]
-        [Route("Custom")]
+        [Route("custom")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatisticModel>> GetStatistics([FromQuery] DateTime from, [FromQuery] DateTime to)
