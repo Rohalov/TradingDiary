@@ -22,7 +22,7 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> CountRiskReward([FromBody] CounterData data)
         {
-            var rr = await _calculationService.CountRiskReward(data);
+            var rr = await Task.Run(() => _calculationService.CountRiskReward(data));
             return Ok(rr);
         }
     }

@@ -4,10 +4,8 @@ namespace TradingDiary.Services
 {
     public class CalculationService : ICalculationService
     {
-        public async Task<decimal> CountRiskReward(CounterData data)
+        public decimal CountRiskReward(CounterData data)
         {
-            var res = await Task.Run(() =>
-            {
                 decimal rr;
                 decimal ep = data.EntryPoint,
                 tp = data.TakeProfit,
@@ -21,8 +19,7 @@ namespace TradingDiary.Services
                     rr = (sl - ep) / (tp - sl);
                 }
                 return rr;
-            });
-            return Math.Round(res, 2);
+           
         }
     }
 }
