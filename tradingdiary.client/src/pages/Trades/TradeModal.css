@@ -1,41 +1,77 @@
-.modal, .factors-modal{
+.modal,
+.factors-modal {
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
+    box-sizing: border-box;
+    width: 370px;
     background-color: #222531;
-    padding: 10px;
+    padding: 0.8em;
 }
 
-.close-button{
+.modal form {
+    display: grid;
+    grid-row-gap: 20px;
+    grid-column-gap: 6px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.input-block select,
+.input-block input,
+.input-block button {
+    width: 100%;
+}
+
+.close-button {
     text-align: right;
 }
 
-.close-button button{
+.close-button button {
     height: 24px;
     border: 0px;
     padding: 0;
     background-color: rgba(0, 0, 0, 0);
 }
 
-.close-button button:hover{
+.close-button button:hover {
     color: red;
 }
 
-.form-group{
-    padding: 5px 5px;
+.form-group {
+    text-align: start;
 }
 
-.form-group input, select{
+.input-block{
+    display: flex;
+    font-size: 18px;
+}
+
+.input-block button{
     border: 1px solid rgb(64, 66, 78);
-    background-color: rgb(23, 25, 36);;
-    padding: 5px;
+    font-size: 14px;
+    background-color: #323546;
 }
 
-
-.factors-modal{
-    width: 20%;
-    border: 2px solid white;
+.form-group input,
+.form-group select {
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid rgb(64, 66, 78);
+    background-color: rgb(23, 25, 36);
+    padding: 7px;
 }
 
-.factors-modal button{
-    margin-top: 10px;
+#special-item{
+    width: 100%;
+    display: flex;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 
+.modal .submit-button button{
+    width: 100%;
+}
+
+.submit-button button:hover{
+    background-color: #3152c9;
+}

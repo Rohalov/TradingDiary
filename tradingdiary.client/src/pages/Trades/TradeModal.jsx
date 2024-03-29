@@ -71,58 +71,92 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="pair">Торгова пара</label>
-                        <select name="pair" onChange={handleInputChange} value={modalData.pair}>
-                            {pairs.map((pair) =>
-                                <option key={pair.id} value={pair.name}>{pair.name}</option>
-                            )}
-                        </select>
+                        <div className='form-label'>
+                            <label htmlFor="pair">Торгова пара</label>
+                        </div>
+                        <div className='input-block'>
+
+                            <select name="pair" onChange={handleInputChange} value={modalData.pair}>
+                                {pairs.map((pair) =>
+                                    <option key={pair.id} value={pair.name}>{pair.name}</option>
+                                )}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="direction">Напрямок руху</label>
-                        <select name="direction" onChange={handleInputChange} value={modalData.direction}>
-                            <option value="0">Long</option>
-                            <option value="1">Short</option>
-                        </select>
+                        <div className='form-label'>
+                            <label htmlFor="direction">Напрямок руху</label>
+
+                        </div>
+                        <div className='input-block'>
+                            <select name="direction" onChange={handleInputChange} value={modalData.direction}>
+                                <option value="0">Long</option>
+                                <option value="1">Short</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="date">Дата</label>
-                        <input type="date" name="date" onChange={handleInputChange} value={date} required></input>
+                        <div className='form-label'>
+                            <label htmlFor="date">Дата</label>
+                        </div>
+                        <div className='input-block'>
+                            <input type="date" name="date" onChange={handleInputChange} value={date} required></input>
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="entryFactors">Фактори входу</label>
-                        <button onClick={() => setFactorsModalOpen(true)}>Обрати</button>
+                        <div className='form-label'>
+                            <label htmlFor="entryFactors">Фактори входу</label>
+                        </div>
+                        <div className='input-block'>
+                            <button onClick={() => setFactorsModalOpen(true)}>Обрати</button>
+                        </div>
                         {factorsModalOpen && entryFactorsModal}
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="riskReward">RR</label>
-                        <input type="number" step="0.1" name="riskReward" onChange={handleInputChange} value={modalData.riskReward} required></input>
+                        <div className='form-label'>
+                            <label htmlFor="riskReward">RR</label>
+                        </div>
+                        <div className='input-block'>
+                            <input type="number" step="0.1" name="riskReward" onChange={handleInputChange} value={modalData.riskReward} required></input>
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="riskPercent">Ризик у % від деп.</label>
-                        <input type="number" min="0" max="100" step="0.1" name="riskPercent" onChange={handleInputChange} value={modalData.riskPercent} required></input>%
+                        <div className='form-label'>
+                            <label htmlFor="riskPercent">Ризик у % від деп.</label>
+                        </div>
+                        <div className='input-block'>
+                            <input type="number" min="0" max="100" step="0.1" name="riskPercent" onChange={handleInputChange} value={modalData.riskPercent} required></input>%
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="result">Результат</label>
-                        <select name="result" onChange={handleInputChange} value={modalData.result}>
-                            <option value="0">Прибуток</option>
-                            <option value="1">Збиток</option>
-                            <option value="2">Беззбиток</option>
-                        </select>
+                        <div className='form-label'>
+                            <label htmlFor="result">Результат</label>
+                        </div>
+                        <div className='input-block'>
+                            <select name="result" onChange={handleInputChange} value={modalData.result}>
+                                <option value="0">Прибуток</option>
+                                <option value="1">Збиток</option>
+                                <option value="2">Беззбиток</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="profitLoss">Прибуток у %| P&L</label>
-                        <input type="number" min="-100" step="0.1" name="profitLoss" onChange={handleInputChange} value={modalData.profitLoss} required></input>%
+                        <div className='form-label'>
+                            <label htmlFor="profitLoss">Прибуток у %| P&L</label>
+                        </div>
+                        <div className='input-block'>
+                            <input type="number" min="-100" step="0.1" name="profitLoss" onChange={handleInputChange} value={modalData.profitLoss} required></input>%
+                        </div>
                     </div>
 
-                    <div className="submit-button">
+                    <div className="submit-button" id='special-item'>
                         {defaultValue
                             ? <button type="submit">Змінити</button>
                             : <button type="submit">Додати</button>
