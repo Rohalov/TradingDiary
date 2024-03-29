@@ -156,7 +156,7 @@ function Statistics() {
     )
 
     async function getCustomStat() {
-        const responce = await fetch(`/api/Statistics/Custom?from=${formData.from}&to=${formData.to}`, {
+        const responce = await fetch(`/api/Statistics/custom?from=${formData.from}&to=${formData.to}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -170,7 +170,7 @@ function Statistics() {
     }
 
     async function getStatisticForWeek() {
-        const responce = await fetch('/api/Statistics/ForWeek', {
+        const responce = await fetch('/api/Statistics/for-week', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -184,7 +184,7 @@ function Statistics() {
     }
 
     async function getStatisticForMonth() {
-        const responce = await fetch('/api/Statistics/ForMonth', {
+        const responce = await fetch('/api/Statistics/for-month', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -198,7 +198,7 @@ function Statistics() {
     }
 
     async function getAllTimeStat() {
-        const responce = await fetch('/api/Statistics/AllTime', {
+        const responce = await fetch('/api/Statistics/all-time', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
