@@ -23,6 +23,43 @@
     background: rgb(34, 37, 49);
 }
 
+.date-container{
+    padding: 1.2em;
+    position: absolute;
+    right: 40%;
+    background-color: #191b23;
+    z-index: 100;
+    border: 1px solid #323546;
+    border-radius: 6px;
+}
+
+.input-date-block{
+    padding: 6px 0;
+}
+
+.input-date-block input{
+    padding: 2px;
+    background-color: rgb(23, 25, 36);
+    border: 1px solid rgb(64, 66, 78);
+}
+
+.input-date-block input:hover{
+    border-color: rgb(56, 97, 251);
+}
+
+.submit-btn{
+    padding-top: 14px;
+}
+
+.submit-btn button{
+    border: 1px solid #323546;
+    width: 100%;
+}
+
+.submit-btn button:hover{
+    border-color: #3152c9;
+}
+
 .statistic-grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -69,9 +106,4 @@
     row-gap: 30px;
     box-sizing: border-box;
     height: 120px;
-}
-
-.date-container{
-    background-color: black;
-    padding: 1.5%;
 }
