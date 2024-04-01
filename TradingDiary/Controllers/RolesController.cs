@@ -25,7 +25,6 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Route("create-role")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<List<ApplicationRole>>> CreateRole([FromQuery] string name)
@@ -48,7 +47,6 @@ namespace TradingDiary.Controllers
         }
 
         [HttpDelete]
-        [Route("delete-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -67,51 +65,6 @@ namespace TradingDiary.Controllers
             }
 
             return Ok(role);
-        }
-
-        [HttpPost]
-        [Route("add-user-to-role")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddUserToRole([FromQuery] string userName, [FromQuery] string roleName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return BadRequest("User does not exist");
-            }
-
-            var role = await _roleManager.FindByNameAsync(roleName);
-            if (role == null)
-            {
-                return BadRequest("Role does not exist");
-            }
-
-            var result = await _userManager.AddToRoleAsync(user, roleName);
-            return Ok(result);
-        }
-
-
-        [HttpDelete]
-        [Route("remove-user-from-role")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RemoveUserFromRole([FromQuery] string userName, [FromQuery] string roleName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return BadRequest("User does not exist");
-            }
-
-            var role = await _roleManager.FindByNameAsync(roleName);
-            if (role == null)
-            {
-                return BadRequest("Role does not exist");
-            }
-
-            await _userManager.RemoveFromRoleAsync(user, roleName);
-            return NoContent();
         }
     }
 }
