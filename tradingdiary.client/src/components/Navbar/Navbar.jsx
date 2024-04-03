@@ -21,7 +21,7 @@ function Navbar() {
                     </Link>
                 </li>
                 <li>
-                    <Link >
+                    <Link to='/settings'>
                         <a className="nav-link">Налаштування</a>
                     </Link>
                 </li>

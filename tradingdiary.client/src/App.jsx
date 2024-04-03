@@ -7,6 +7,7 @@ import Register from './pages/Register/Register';
 import NoPage from './pages/NoPage/NoPage';
 import Trades from './pages/Trades/Trades';
 import Statistics from './pages/Statistics/Statistics';
+import Settings from './pages/Settings/Settings';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/trades" element={<Trades />} />
                     <Route path="/statistics" element={<Statistics />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<NoPage />} />
                 </Routes>
             </AuthProvider>
