@@ -12,9 +12,10 @@ function Statistics() {
         to: ""
     });
     const [dateFormOpen, setDateFormOpen] = useState(false);
-    const [token,] = useContext(AuthContext);
+    const [token, checkAuth] = useContext(AuthContext);
 
     useEffect(() => {
+        checkAuth();
         getStatisticForMonth();
     }, [])
 

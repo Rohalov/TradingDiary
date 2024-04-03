@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
 import './Login.css'
 
 function Login() {
@@ -9,8 +8,6 @@ function Login() {
         password: ""
     })
     const [errorMessage, setErrorMessage] = useState();
-
-    const [, setToken] = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -69,7 +66,7 @@ function Login() {
             const data = await responce.text();
             console.log(data);
             if (responce.status == 200) {
-                setToken(data);
+                localStorage.setItem("token", data)
                 navigate("/trades");
             } else {
                 setErrorMessage("Invalid username or password");

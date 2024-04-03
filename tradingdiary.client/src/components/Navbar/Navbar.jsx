@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom';
 import './Navbar.css'
 
 function Navbar() {
+
+    const signOut = () => {
+        localStorage.removeItem("token");
+    }
+
     return (
         <nav className="navbar">
             <ul className='nav-menu'>
@@ -24,7 +29,7 @@ function Navbar() {
 
             <div className='sign-out'>
                 <Link to='/'>
-                    <button className='nav-btn'>Вийти</button>
+                    <button onClick={signOut} className='nav-btn'>Вийти</button>
                 </Link>
             </div>
         </nav>

@@ -13,10 +13,11 @@ function Trades() {
     const [tradeData, setTradeData] = useState(null);
     const [currentTradeId, setCurrentTradeId] = useState();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [token,] = useContext(AuthContext);
+    const [token, checkAuth] = useContext(AuthContext);
 
 
     useEffect(() => {
+        checkAuth();
         getTrades();
     }, []);
 
@@ -129,7 +130,7 @@ function Trades() {
     }
 
     async function deleteTrade() {
-        const responce = await fetch(`/api/Trades?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades/${currentTradeId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -153,7 +154,7 @@ function Trades() {
     }
 
     async function updateTrade(trade) {
-        const responce = await fetch(`/api/Trades?id=${currentTradeId}`, {
+        const responce = await fetch(`/api/Trades/${currentTradeId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,

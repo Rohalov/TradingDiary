@@ -9,7 +9,6 @@ namespace TradingDiary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
@@ -19,7 +18,9 @@ namespace TradingDiary.Controllers
             _authenticationService = authenticationService;
         }
 
+
         [HttpPost("register")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Register([FromBody] RegisterRequest request)
@@ -32,8 +33,8 @@ namespace TradingDiary.Controllers
             return Created($"~api/users/{user.Id}", $"User {user.UserName} successfully created");
         }
 
-
         [HttpPost("login")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Login([FromBody] UserDTO request)
@@ -43,6 +44,22 @@ namespace TradingDiary.Controllers
             {
                 return NotFound("User not found.");
             }
+            return Ok(jwtToken);
+        }
+
+        [HttpPut("jwt-token")]
+        [Authorize(Policy = "RequireUserRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CheckToken()
+        {
+            string token = this.Request.Headers["Authorization"];
+            if (token == null)
+            {
+                return BadRequest();
+            }
+            token = token.Substring("Bearer ".Length);
+            var jwtToken = await  _authenticationService.CheckToken(token);
             return Ok(jwtToken);
         }
     }

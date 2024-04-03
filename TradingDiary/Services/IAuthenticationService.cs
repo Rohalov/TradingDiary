@@ -8,5 +8,6 @@ namespace TradingDiary.Services
     {
         Task<string> Login(UserDTO user);
         Task<ApplicationUser> Register(RegisterRequest request);
+        Task<string> CheckToken(string token);
     }
 }

@@ -31,6 +31,28 @@ namespace TradingDiary.Services
             _context = context;
         }
 
+        public async Task<string> CheckToken(string token)
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var jwtToken = jwtHandler.ReadToken(token) as JwtSecurityToken;
+            var expirationDate = jwtToken.ValidTo;
+            var now = DateTime.UtcNow;
+            if (expirationDate < now)
+            {
+                token = await GenerateJwtToken(new ApplicationUser
+                {
+                    Id = Convert.ToInt32(
+                        jwtToken.Claims
+                            .Where(c => c.Type == ClaimTypes.NameIdentifier)
+                            .Select(c => c.Value).FirstOrDefault()),
+                    UserName = jwtToken.Claims
+                            .Where(c => c.Type == ClaimTypes.Name)
+                            .Select(c => c.Value).FirstOrDefault()
+                });
+            }
+            return token;
+        }
+
         public async Task<ApplicationUser> Register(RegisterRequest request)
         {
             var newUser = _mapper.Map<ApplicationUser>(request);
@@ -92,8 +114,6 @@ namespace TradingDiary.Services
 
         private async Task<List<Claim>> GetAllValidClaims(ApplicationUser user)
         {
-            var _option = new IdentityOptions();
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
