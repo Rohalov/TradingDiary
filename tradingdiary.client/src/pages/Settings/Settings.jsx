@@ -42,16 +42,19 @@ function Settings() {
                                 <input type="text" placeholder="Введи ім'я аккаунту" value={userData.userName} />
                             </div>
                         </div>
+
                         <div className="settings-item">
                             <div className="item-label">
                                 Email
                             </div>
-                            <div className="item-input" >
-                                <input type="text" placeholder="Email" value={userData.email} />
+                            <div className="item-input">
+                                <input className='disabled-input' type="text" placeholder="Email" value={userData.email} disabled/>
                             </div>
                         </div>
+
                         <button className="save-button">Зберегти</button>
-                        <div className="settings-item">
+                        
+                        <div className="settings-item" id='password-setting'>
                             <div className="item-label">
                                 Пароль
                             </div>

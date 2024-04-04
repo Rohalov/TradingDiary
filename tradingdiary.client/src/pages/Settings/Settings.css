@@ -44,5 +44,109 @@
     flex-direction: column;
     width: 100%;
     align-items: start;
+    padding: 0 2em;
 }
 
+.box-header{
+    font-size: 22px;
+    font-weight: 700;
+    height: 60px;
+    display: flex;
+    border-bottom: 1px solid #222531;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-settings-form{
+    padding: 20px 0;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.settings-item{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.item-label{
+    line-height: 16px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: start;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.item-input input{
+    box-sizing: border-box;
+    font-size: 14px;
+    height: 38px;
+    padding: 0 12px;
+    background-color: #323546;
+    border: 1px solid rgb(64, 66, 78);
+    width: 100%;
+    border-radius: 6px;
+}
+
+.item-input input:hover{
+    border-color: rgb(56, 97, 251);
+}
+
+.item-input input:focus{
+    background-color: #222531;
+}
+.item-input input:focus-visible{
+    outline: 2px solid rgb(56, 97, 251);
+    border: 0;
+}
+
+.disabled-input{
+    background-color: #24262e!important;
+    color: #6f717c;
+}
+
+.disabled-input:hover{
+    border-color: rgb(64, 66, 78)!important;
+}
+
+.save-button{
+   background-color: rgb(56, 97, 251);
+   border: 0;
+   border-radius: 6px;
+   width: 30%;
+   align-items: center;
+   justify-content: center;
+   padding: 8px 4px;
+   margin-top: 8px;
+}
+
+.save-button:hover{
+    background-color: #3152c9;
+}
+
+#password-setting{
+    margin-top: 20px;
+    border-top: 1px solid #222531;
+    padding-top: 20px;
+}
+
+#password-setting button{
+    box-sizing: border-box;
+    align-items: center;
+    background: transparent;
+    border: 1px solid rgb(50, 53, 70);
+    border-radius: 6px;
+    display: inline-flex;
+    justify-content: center;
+    font-weight: 600;
+    width: 40%;
+    font-size: 14px;
+    padding: 6px 0px;
+}
+
+#password-setting button:hover{
+    background-color: rgb(34, 37, 49);
+}
