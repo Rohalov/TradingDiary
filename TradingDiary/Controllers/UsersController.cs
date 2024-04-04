@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TradingDiary.Models.DTO;
 using TradingDiary.Models.Entities;
 
 namespace TradingDiary.Controllers
@@ -10,13 +14,53 @@ namespace TradingDiary.Controllers
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
         public UsersController(RoleManager<ApplicationRole> roleManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _mapper = mapper;
         }
+
+        [HttpGet]
+        [Authorize(Policy = "RequireUserRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserDataDTO>> GetUserData()
+        {
+            var userId = this.GetUserIdByClaims();
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                NotFound("User not found");
+            }
+
+            var userData = _mapper.Map<UserDataDTO>(user);
+            return Ok(userData);
+        }
+
+        [HttpPut("rename")]
+        [Authorize(Policy = "RequireUserRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<string>> RenameUser([FromBody]string newName)
+        {
+            var userId = this.GetUserIdByClaims();
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                NotFound("User not found");
+            }
+
+            await _userManager.SetUserNameAsync(user, newName);
+            return Ok(newName);
+        }
+
+
 
         [HttpPost]
         [Route("add-user-to-role")]
