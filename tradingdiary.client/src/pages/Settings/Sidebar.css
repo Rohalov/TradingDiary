@@ -1,0 +1,27 @@
+.sidebar {
+    box-sizing: border-box;
+    display: flex;
+    margin: 14px 28px 0 0;
+}
+
+.sidebar-item {
+    box-sizing: border-box;
+    display: block;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 14px;
+    min-width: 160px;
+    margin-bottom: 4px;
+    align-items: center;
+}
+
+    .sidebar-item:hover {
+        background-color: #646b80;
+        color: #fff;
+    }
+
+.active {
+    background-color: #323546;
+    font-weight: 700;
+}
