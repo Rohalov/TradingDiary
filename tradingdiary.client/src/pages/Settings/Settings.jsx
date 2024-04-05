@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 import { AuthContext } from '../../contexts/AuthContext';
 import './Settings.css';
+import Sidebar from './Sidebar';
 
 function Settings() {
     const [userData, setUserData] = useState({
@@ -13,7 +13,13 @@ function Settings() {
 
     useEffect(() => {
         checkAuth();
+        getUserData();
     }, []);
+
+    const handleNameChange = (e) => {
+        const name = e.target.value;
+        setUserData({ userName: name });
+    }
 
     return (
         <div className="settings-container">
@@ -22,13 +28,8 @@ function Settings() {
             </div>
 
             <div className="main-content">
-                <div className="sidebar">
-                    <aside>
-                        <Link to="/settings">
-                            <a className="sidebar-item active">Профіль</a>
-                        </Link>
-                    </aside>
-                </div>
+                <Sidebar />
+                
                 <div className="box">
                     <div className="box-header">
                         Профіль
@@ -39,7 +40,7 @@ function Settings() {
                                 Ім'я користувача
                             </div>
                             <div className="item-input" >
-                                <input type="text" placeholder="Введи ім'я аккаунту" value={userData.userName} />
+                                <input type="text" placeholder="Введи ім'я аккаунту" value={userData.userName} onChange={handleNameChange} />
                             </div>
                         </div>
 
@@ -52,7 +53,7 @@ function Settings() {
                             </div>
                         </div>
 
-                        <button className="save-button">Зберегти</button>
+                        <button className="save-button" onClick={saveUserData}>Зберегти</button>
                         
                         <div className="settings-item" id='password-setting'>
                             <div className="item-label">
@@ -65,6 +66,35 @@ function Settings() {
             </div>
         </div>
     )
+
+    async function getUserData() {
+        const responce = await fetch('/api/Users', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .catch(error => console.error('Error:', error));
+
+        const data = await responce.json();
+        console.log(data);
+        setUserData(data);
+    }
+
+    async function saveUserData(){
+        const responce = await fetch('/api/Users/rename', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData.userName)
+        })
+            .catch(error => console.error('Error:', error));
+
+        const data = await responce.json();
+        console.log(data);
+    }
 }
 
 export default Settings
