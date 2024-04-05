@@ -59,8 +59,9 @@ namespace TradingDiary.Services
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
             newUser.PasswordHash = passwordHash;
 
-            var userdb = await _userManager.FindByNameAsync(newUser.UserName);
-            if (userdb != null)
+            var nameIsUsed = await _userManager.FindByNameAsync(newUser.UserName) != null;
+            var emailIsUsed = await _userManager.FindByEmailAsync(newUser.Email) != null;
+            if (nameIsUsed || emailIsUsed)
             {
                 return null;
             }

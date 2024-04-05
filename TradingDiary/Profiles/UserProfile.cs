@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TradingDiary.Models.DTO;
 using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 
 
 namespace TodoList.Profiles
@@ -11,6 +12,7 @@ namespace TodoList.Profiles
         {
             CreateMap<ApplicationUser, UserDTO>();
             CreateMap<UserDTO, ApplicationUser>();
+            CreateMap<RegisterRequest, ApplicationUser>();
             CreateMap<ApplicationUser, UserDataDTO>();
             CreateMap<UserDataDTO, ApplicationUser>();
         }
