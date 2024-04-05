@@ -52,11 +52,6 @@ namespace TradingDiary.Data.Identity
             GC.SuppressFinalize(this);
         }
 
-        public Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -67,6 +62,12 @@ namespace TradingDiary.Data.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await userTable.FindByNameAsync(normalizedUserName);
+        }
+
+        public async Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.FindByEmailAsync(normalizedEmail);
         }
 
         public async Task<string?> GetEmailAsync(ApplicationUser user, CancellationToken cancellationToken)

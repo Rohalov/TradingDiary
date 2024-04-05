@@ -47,6 +47,12 @@ namespace TradingDiary.Data.Identity
             return user;
         }
 
+        public async Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail)
+        {
+            var user = await _context.Users.Where(u => u.NormalizedEmail == normalizedEmail).FirstOrDefaultAsync();
+            return user;
+        }
+
         public async Task<string?> GetEmailAsync(ApplicationUser user)
         {
             var email = await _context.Users.Where(u => u.UserName == user.UserName).Select(u => u.Email).FirstOrDefaultAsync();
