@@ -27,7 +27,7 @@ function Settings() {
                 <Navbar />
             </div>
 
-            <div className="main-content">
+            <div className="main-block">
                 <Sidebar />
                 
                 <div className="box">

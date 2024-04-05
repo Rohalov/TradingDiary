@@ -3,7 +3,7 @@
     box-sizing: border-box;
 }
 
-.main-content{
+.main-block{
     display: flex;
     box-sizing: border-box;
     max-width: 70%;
