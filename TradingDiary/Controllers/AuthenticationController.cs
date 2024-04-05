@@ -28,7 +28,7 @@ namespace TradingDiary.Controllers
             var user = await _authenticationService.Register(request);
             if (user == null)
             {
-                return BadRequest("User with that name already exists");
+                return BadRequest("User already exists");
             }
             return Created($"~api/users/{user.Id}", $"User {user.UserName} successfully created");
         }
