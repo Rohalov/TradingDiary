@@ -17,6 +17,7 @@ namespace TradingDiary.Data.Identity
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
             user.NormalizedUserName = user.UserName.ToUpper();
+            user.NormalizedEmail = user.Email.ToUpper();
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
@@ -44,6 +45,24 @@ namespace TradingDiary.Data.Identity
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == normalizedUserName);
             return user;
+        }
+
+        public async Task<string?> GetEmailAsync(ApplicationUser user)
+        {
+            var email = await _context.Users.Where(u => u.UserName == user.UserName).Select(u => u.Email).FirstOrDefaultAsync();
+            return email;
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(ApplicationUser user)
+        {
+            var comfirmed = await _context.Users.Where(u => u.UserName == user.UserName).Select(u => u.EmailConfirmed).FirstOrDefaultAsync();
+            return comfirmed;
+        }
+
+        public async Task<string?> GetNormalizedEmailAsync(ApplicationUser user)
+        {
+            var normalizeEmail = await _context.Users.Where(u => u.UserName == user.UserName).Select(u => u.NormalizedEmail).FirstOrDefaultAsync();
+            return normalizeEmail;
         }
 
         public async Task<string> GetUserIdAsync(ApplicationUser user)
@@ -144,13 +163,33 @@ namespace TradingDiary.Data.Identity
             await _context.SaveChangesAsync();
         }
 
+        public async Task SetEmailAsync(ApplicationUser user, string? email)
+        {
+            var userDb = await _context.Users.Where(u => u.UserName == user.UserName).FirstAsync();
+            userDb.Email = email;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
+        {
+            var userDb = await _context.Users.Where(u => u.UserName == user.UserName).FirstAsync();
+            userDb.EmailConfirmed = confirmed;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail)
+        {
+            var userDb = await _context.Users.Where(u => u.UserName == user.UserName).FirstAsync();
+            userDb.NormalizedEmail = normalizedEmail;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName)
         {
             var userDB = await _context.Users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
             if (userDB != null)
             {
                 userDB.NormalizedUserName = normalizedName;
-                _context.Update(userDB);
             }
             await _context.SaveChangesAsync();
         }

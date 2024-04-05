@@ -3,7 +3,7 @@ using TradingDiary.Models.Entities;
 
 namespace TradingDiary.Data.Identity
 {
-    public class UserStore : IUserStore<ApplicationUser>, IUserRoleStore<ApplicationUser>
+    public class UserStore : IUserStore<ApplicationUser>, IUserRoleStore<ApplicationUser>, IUserEmailStore<ApplicationUser>
     {
         private readonly UserTable userTable;
 
@@ -52,6 +52,11 @@ namespace TradingDiary.Data.Identity
             GC.SuppressFinalize(this);
         }
 
+        public Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -62,6 +67,24 @@ namespace TradingDiary.Data.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await userTable.FindByNameAsync(normalizedUserName);
+        }
+
+        public async Task<string?> GetEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.GetEmailAsync(user);
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.GetEmailConfirmedAsync(user);
+        }
+
+        public async Task<string?> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.GetNormalizedEmailAsync(user);
         }
 
         public async Task<string?> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
@@ -132,6 +155,24 @@ namespace TradingDiary.Data.Identity
                 throw new ArgumentNullException(nameof(user));
             }
             await userTable.RemoveFromRoleAsync(user, roleName);
+        }
+
+        public async Task SetEmailAsync(ApplicationUser user, string? email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await userTable.SetEmailAsync(user, email);
+        }
+
+        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await userTable.SetEmailConfirmedAsync(user, confirmed);
+        }
+
+        public async Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await userTable.SetNormalizedEmailAsync(user, normalizedEmail);
         }
 
         public async Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName, CancellationToken cancellationToken)
