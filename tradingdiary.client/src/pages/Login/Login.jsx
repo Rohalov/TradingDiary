@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ForgotModal from './ForgotModal';
 import './Login.css'
 
 function Login() {
@@ -8,12 +9,18 @@ function Login() {
         password: ""
     })
     const [errorMessage, setErrorMessage] = useState();
+    const [forgotModalIsOpen, setForgotModalIsOpen] = useState(false);
 
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
+    };
+
+    const openModal = (e) => {
+        e.preventDefault();
+        setForgotModalIsOpen(true);
     };
 
     return (
@@ -32,7 +39,8 @@ function Login() {
                     </div>
 
                     <div className="forgot">
-                        <a href="#">Забули пароль?</a>
+                        <a href="#" onClick={openModal}>Забули пароль?</a>
+                        {forgotModalIsOpen && <ForgotModal closeModal={() => setForgotModalIsOpen(false)} />}
                     </div>
                     
                     {errorMessage && <div className="error-message">{errorMessage}</div>}

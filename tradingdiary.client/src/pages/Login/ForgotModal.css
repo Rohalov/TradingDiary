@@ -1,0 +1,60 @@
+.forgot-modal{
+    display: flex;
+    width: 280px;
+    flex-direction: column;
+    border-radius: 16px;
+    box-sizing: border-box;
+    background-color: #222531;
+    padding: 14px;
+}
+
+.forgot-modal .input-box{
+    height: 40px;
+}
+
+.forgot-modal .input-box input{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.modal-label{
+    font-size: 22px;
+    text-align: start;
+    font-weight: 700;
+    line-height: 42px;
+}
+
+.modal-subtitle{
+    width: 100%;
+    text-align: start;
+    font-size: 12px;
+    color: #A1A7BB;
+    line-height: 16px;
+    margin: 4px 0;
+}
+
+.label-block{
+    text-align: start;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    margin-bottom: 2px;
+}
+
+.close-button{
+    height: 24px;
+}
+
+.send-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.send-button button{
+    width: 100%;
+    padding: 8px 0;
+    background-color: #3861FB;
+    font-size: 16px;
+}
