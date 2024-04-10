@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Threading;
 using TradingDiary.Models.Entities;
 
 namespace TradingDiary.Data.Identity
 {
-    public class UserStore : IUserStore<ApplicationUser>, IUserRoleStore<ApplicationUser>, IUserEmailStore<ApplicationUser>
+    public class UserStore : IUserStore<ApplicationUser>, IUserRoleStore<ApplicationUser>, IUserEmailStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
     {
         private readonly UserTable userTable;
 
@@ -204,6 +205,24 @@ namespace TradingDiary.Data.Identity
                 throw new ArgumentNullException(nameof(user));
             }
             return await userTable.UpdateAsync(user);
+        }
+
+        public async Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await userTable.SetPasswordHashAsync(user, passwordHash);
+        }
+
+        public async Task<string?> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.GetPasswordHashAsync(user);
+        }
+
+        public async Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await userTable.HasPasswordAsync(user);
         }
     }
 }

@@ -218,5 +218,27 @@ namespace TradingDiary.Data.Identity
             var normalizeName = user.NormalizedUserName;
             return await Task.FromResult(normalizeName);
         }
+
+        public async Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash)
+        {
+            var userDb =  await _context.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
+            if (userDb != null)
+            {
+                userDb.PasswordHash = passwordHash;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<string?> GetPasswordHashAsync(ApplicationUser user)
+        {
+            var passwordHash = await _context.Users.Where(u => u.Id == user.Id).Select(u => u.PasswordHash).FirstOrDefaultAsync();
+            return passwordHash;
+        }
+
+        public async Task<bool> HasPasswordAsync(ApplicationUser user)
+        {
+            var passwordHash = await _context.Users.Where(u => u.Id == user.Id).Select(u => u.PasswordHash).FirstOrDefaultAsync();
+            return passwordHash != null;
+        }
     }
 }
