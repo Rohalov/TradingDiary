@@ -9,6 +9,7 @@ using TradingDiary.Data.Identity;
 using TradingDiary.Models.Entities;
 using TradingDiary.Services;
 using Newtonsoft.Json;
+using sib_api_v3_sdk.Client;
 
 internal class Program
 {
@@ -23,6 +24,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         ConfigureServices(builder);
+
+        Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoApi:ApiKey"]);
 
         var app = builder.Build();
 
