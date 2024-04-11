@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using TradingDiary.Data;
 using TradingDiary.Models.DTO;
 using TradingDiary.Models.Entities;
 
@@ -17,7 +18,8 @@ namespace TradingDiary.Controllers
         private readonly IMapper _mapper;
 
         public UsersController(RoleManager<ApplicationRole> roleManager,
-            UserManager<ApplicationUser> userManager, IMapper mapper)
+            UserManager<ApplicationUser> userManager,
+            IMapper mapper)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -35,7 +37,7 @@ namespace TradingDiary.Controllers
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                NotFound("User not found");
+               return NotFound("User not found");
             }
 
             var userData = _mapper.Map<UserDataDTO>(user);
@@ -53,14 +55,35 @@ namespace TradingDiary.Controllers
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                NotFound("User not found");
+               return NotFound("User not found");
             }
 
             await _userManager.SetUserNameAsync(user, newName);
             return Ok(newName);
         }
 
+        [HttpPost("reset-password")]
+        [Authorize(Policy = "RequireUserRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ResetPassword([FromQuery]string resetToken, [FromBody] string newPassword)
+        {
+            var userId = this.GetUserIdByClaims();
 
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+            if (!result.Succeeded) 
+            {
+                return BadRequest(result);
+            }
+
+            return Ok("Password changed");
+        }
 
         [HttpPost]
         [Route("add-user-to-role")]
