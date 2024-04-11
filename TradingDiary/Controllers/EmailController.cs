@@ -20,13 +20,16 @@ namespace TradingDiary.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "RequireUserRole")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> SendResetPasswordMessage()
+        public async Task<ActionResult> SendResetPasswordMessage([FromBody] string email)
         {
-            var userId = this.GetUserIdByClaims();
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user =  await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("User with this email does not exist");
+            }
 
             string emailSender = _config["BrevoApi:SenderEmail"];
             string nameSender = _config["BrevoApi:SenderName"];
@@ -40,7 +43,7 @@ namespace TradingDiary.Controllers
                 $"<p>Ми отримали запит на зміну паролю від твого аккаунту. Якщо ви не надсилали запит на зміну пароля, проігноруйте цей електронний лист, у вашому обліковому записі не буде внесено жодних змін. </p>" +
                 $"<p>Щоб змінити пароль, перейдіть за посиланням нижче:</p><p>{resetUrl}</p></body></html>";
 
-            EmailSender.SendEmail(nameSender, emailSender, user.UserName, user.Email, subject, htmlContent);
+            EmailSender.SendEmail(nameSender, emailSender, user.UserName, email, subject, htmlContent);
             return Ok("Email send");
         }
     }
