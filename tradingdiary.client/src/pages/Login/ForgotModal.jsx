@@ -4,6 +4,7 @@ import './ForgotModal.css'
 
 function ForgotModal({ closeModal }) {
     const [email, setEmail] = useState("");
+    const [errorMessage, setErrorMessage] = useState();
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -37,13 +38,30 @@ function ForgotModal({ closeModal }) {
                         <input type="email" placeholder="Email" name="email" value={email} onChange={handleInputChange}></input>
                     </div>
                 </div>
+                
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                 <div className="send-button">
-                    <button>Відправити</button>
+                    <button onClick={send}>Відправити</button>
                 </div>
             </div>
         </div>
     )
+
+    async function send(e) {
+        e.preventDefault();
+        const responce = await fetch('/api/Email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(email)
+        })
+        const data = await responce.text();
+        if (responce.status != 200) {
+            setErrorMessage(data);
+        }
+    }
 }
 
 export default ForgotModal
