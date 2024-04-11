@@ -67,3 +67,8 @@
 .forgot-modal .error-message{
     text-align: center;
 }
+
+.email-icon{
+    font-size: 15px;
+    height: 40px;
+}

@@ -1,15 +1,51 @@
 import { useState } from "react";
 import './ForgotModal.css'
 
-
 function ForgotModal({ closeModal }) {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState();
+    const [emailSent, setEmailSent] = useState(true);
 
     const handleInputChange = (e) => {
         const value = e.target.value;
         setEmail(value);
     };
+
+    const emailForm =
+        <div>
+            <div className="modal-label">
+                Забули пароль?
+            </div>
+
+            <div className="modal-subtitle">
+                Введіть адрес електроної пошти. Ви отримаєте листа з інструкціями.
+            </div>
+
+            <div className="input-block">
+                <div className="label-block">
+                    Введіть поштову адресу
+                </div>
+                <div className="input-box">
+                    <input type="email" placeholder="Email" name="email" value={email} onChange={handleInputChange}></input>
+                </div>
+            </div>
+
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+            <div className="send-button">
+                <button onClick={send}>Відправити</button>
+            </div>
+        </div>;
+
+
+    const emailSentBox =
+        <div className="email-result-box">
+            <div className="email-icon">
+            </div>
+            <div className="label-block">
+                Лист з інструкціями відправлено на адресу: {email}
+            </div>
+        </div>
 
     return (
         <div className="modal-container">
@@ -22,28 +58,8 @@ function ForgotModal({ closeModal }) {
                     </button>
                 </div>
 
-                <div className="modal-label">
-                    Забули пароль?
-                </div>
+                {emailSent ? emailSentBox : emailForm}
 
-                <div className="modal-subtitle">
-                    Введіть адрес електроної пошти. Ви отримаєте листа з інструкціями.
-                </div>
-
-                <div className="input-block">
-                    <div className="label-block">
-                        Введіть поштову адресу
-                    </div>
-                    <div className="input-box">
-                        <input type="email" placeholder="Email" name="email" value={email} onChange={handleInputChange}></input>
-                    </div>
-                </div>
-                
-                {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-                <div className="send-button">
-                    <button onClick={send}>Відправити</button>
-                </div>
             </div>
         </div>
     )
@@ -58,7 +74,9 @@ function ForgotModal({ closeModal }) {
             body: JSON.stringify(email)
         })
         const data = await responce.text();
-        if (responce.status != 200) {
+        if (responce.status == 200) {
+            setEmailSent(true);
+        } else {
             setErrorMessage(data);
         }
     }
