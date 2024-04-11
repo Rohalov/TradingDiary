@@ -74,11 +74,22 @@ internal class Program
         builder.Services.AddScoped<IEntryFactorService, EntryFactorService>();
         builder.Services.AddScoped<IStatisticsService, StatisticsService>();
         builder.Services.AddScoped<ICalculationService, CalculationService>();
+        builder.Services.AddSingleton<IPasswordHasher<ApplicationUser>, PasswordHasher>();
 
         builder.Services.AddDbContext<ApplicationDbContext>();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.SignIn.RequireConfirmedAccount = true)
+        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+            o =>
+                o.Password = new PasswordOptions
+                {
+                    RequiredLength = 8,
+                    RequireUppercase = true,
+                    RequireLowercase = true,
+                    RequireNonAlphanumeric = false,
+                    RequireDigit = true,
+                    RequiredUniqueChars = 1
+                })
             .AddDefaultTokenProviders();
 
         builder.Services.AddTransient<IUserStore<ApplicationUser>, UserStore>();

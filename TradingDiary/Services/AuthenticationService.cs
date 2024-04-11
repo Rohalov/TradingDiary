@@ -53,29 +53,43 @@ namespace TradingDiary.Services
             return token;
         }
 
-        public async Task<ApplicationUser> Register(RegisterRequest request)
+        public async Task<IdentityResult> Register(RegisterRequest request)
         {
             var newUser = _mapper.Map<ApplicationUser>(request);
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            newUser.PasswordHash = passwordHash;
 
             var nameIsUsed = await _userManager.FindByNameAsync(newUser.UserName) != null;
-            var emailIsUsed = await _userManager.FindByEmailAsync(newUser.Email) != null;
-            if (nameIsUsed || emailIsUsed)
+            if (nameIsUsed)
             {
-                return null;
+                return IdentityResult.Failed(_userManager.ErrorDescriber.DuplicateUserName(newUser.UserName));
             }
 
-            var isCreated = await _userManager.CreateAsync(newUser);
-            var createdUser = new ApplicationUser();
-            if (isCreated.Succeeded)
+            var emailIsUsed = await _userManager.FindByEmailAsync(newUser.Email) != null;
+            if (emailIsUsed)
             {
-                await _userManager.AddToRoleAsync(newUser, "User");
-                createdUser = await _userManager.FindByNameAsync(newUser.UserName);
-                await _context.UserCards.AddAsync(new UserCard { UserId = createdUser.Id });
-                await _context.SaveChangesAsync();
+                return IdentityResult.Failed(_userManager.ErrorDescriber.DuplicateEmail(newUser.Email));
             }
-            return createdUser;
+
+            var validate = await _userManager.PasswordValidators[0].ValidateAsync(_userManager, newUser, request.Password);
+            if (!validate.Succeeded)
+            {
+                return validate;
+            }
+            var passwordHash = _userManager.PasswordHasher.HashPassword(newUser, request.Password);
+            newUser.PasswordHash = passwordHash;
+
+
+            var isCreated = await _userManager.CreateAsync(newUser);
+            if (!isCreated.Succeeded)
+            {
+                return isCreated;
+            }
+
+            var createdUser = await _userManager.FindByNameAsync(newUser.UserName);
+            await _userManager.AddToRoleAsync(createdUser, "User");
+            await _context.UserCards.AddAsync(new UserCard { UserId = createdUser.Id });
+            await _context.SaveChangesAsync();
+
+            return IdentityResult.Success;
         }
 
         public async Task<string> Login(UserDTO request)

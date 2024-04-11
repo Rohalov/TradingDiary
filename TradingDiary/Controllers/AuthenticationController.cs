@@ -25,12 +25,12 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Register([FromBody] RegisterRequest request)
         {
-            var user = await _authenticationService.Register(request);
-            if (user == null)
+            var result = await _authenticationService.Register(request);
+            if (!result.Succeeded)
             {
-                return BadRequest("User already exists");
+                return BadRequest(result);
             }
-            return Created($"~api/users/{user.Id}", $"User {user.UserName} successfully created");
+            return Created($"~api/users/", $"User {request.UserName} successfully created");
         }
 
         [HttpPost("login")]
