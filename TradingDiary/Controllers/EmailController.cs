@@ -38,7 +38,7 @@ namespace TradingDiary.Controllers
 
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            string resetUrl = $@"http://localhost:5173/resetpassword/{resetToken}";
+            string resetUrl = $"http://localhost:5173/resetpassword/{resetToken.Replace('/','%')}";
             string htmlContent = $"<html><body><h1>Запит на зміну пароля</h1><p>Вітаю,{user.UserName}<p>" +
                 $"<p>Ми отримали запит на зміну паролю від твого аккаунту. Якщо ви не надсилали запит на зміну пароля, проігноруйте цей електронний лист, у вашому обліковому записі не буде внесено жодних змін. </p>" +
                 $"<p>Щоб змінити пароль, перейдіть за посиланням нижче:</p><p>{resetUrl}</p></body></html>";

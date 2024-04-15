@@ -76,6 +76,7 @@ namespace TradingDiary.Controllers
                 return NotFound("User not found");
             }
             
+            resetToken = resetToken.Replace('%', '/');
             var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
             if (!result.Succeeded) 
             {
