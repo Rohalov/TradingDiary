@@ -1,10 +1,11 @@
 import { useState } from "react";
 import './ForgotModal.css'
+import { MdOutgoingMail } from "react-icons/md";
 
 function ForgotModal({ closeModal }) {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState();
-    const [emailSent, setEmailSent] = useState(true);
+    const [emailSent, setEmailSent] = useState(false);
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -41,6 +42,7 @@ function ForgotModal({ closeModal }) {
     const emailSentBox =
         <div className="email-result-box">
             <div className="email-icon">
+                <MdOutgoingMail size={60} />
             </div>
             <div className="label-block">
                 Лист з інструкціями відправлено на адресу: {email}

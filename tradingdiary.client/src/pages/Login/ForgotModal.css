@@ -72,3 +72,10 @@
     font-size: 15px;
     height: 40px;
 }
+
+.email-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5%;
+}
