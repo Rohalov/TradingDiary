@@ -94,16 +94,16 @@ namespace TradingDiary.Services
 
         public async Task<string> Login(UserDTO request)
         {
-            var userInDB = await _userManager.FindByNameAsync(request.UserName);
-            if (userInDB == null)
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user == null)
             {
                 return null;
             }
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, userInDB.PasswordHash))
+            if (!await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 return null;
             }
-            var jwt = await GenerateJwtToken(userInDB);
+            var jwt = await GenerateJwtToken(user);
             return jwt;
         }
 
