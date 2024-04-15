@@ -42,7 +42,7 @@ function Login() {
                         <a href="#" onClick={openModal}>Забули пароль?</a>
                         {forgotModalIsOpen && <ForgotModal closeModal={() => setForgotModalIsOpen(false)} />}
                     </div>
-                    
+
                     {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                     <div className="submit-button">
@@ -77,7 +77,7 @@ function Login() {
                 localStorage.setItem("token", data)
                 navigate("/trades");
             } else {
-                setErrorMessage("Invalid username or password");
+                setErrorMessage(data.errors[0].description);
             }
         } catch (error) {
             console.log(error);

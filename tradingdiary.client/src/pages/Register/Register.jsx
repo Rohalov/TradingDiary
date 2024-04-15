@@ -65,13 +65,12 @@ function Register() {
             body: JSON.stringify(userData)
         });
 
+        const data = await responce.json();
         if (responce.status == 201) {
             navigate("/login");
         } else {
-            setErrorMessage("User with that name already exist");
+            setErrorMessage(data.errors[0].description);
         }
-
-        const data = await responce.json();
         console.log(data);
     }
 }
