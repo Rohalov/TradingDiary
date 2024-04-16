@@ -8,6 +8,7 @@ import NoPage from './pages/NoPage/NoPage';
 import Trades from './pages/Trades/Trades';
 import Statistics from './pages/Statistics/Statistics';
 import Settings from './pages/Settings/Settings';
+import ResetPassword from './pages/ReserPassword/ResetPassword';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route index path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/resetpassword/:token" element={<ResetPassword />} />
                     <Route path="/trades" element={<Trades />} />
                     <Route path="/statistics" element={<Statistics />} />
                     <Route path="/settings" element={<Settings />} />

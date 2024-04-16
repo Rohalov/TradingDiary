@@ -13,6 +13,7 @@
     <Folder Include="src\assets\" />
     <Folder Include="src\contexts\" />
     <Folder Include="src\data\" />
+    <Folder Include="src\pages\ReserPassword\" />
     <Folder Include="src\pages\Settings\" />
     <Folder Include="src\pages\Statistics\Charts\" />
   </ItemGroup>

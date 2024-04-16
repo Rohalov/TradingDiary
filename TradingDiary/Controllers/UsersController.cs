@@ -37,7 +37,7 @@ namespace TradingDiary.Controllers
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-               return NotFound("User not found");
+                return NotFound("User not found");
             }
 
             var userData = _mapper.Map<UserDataDTO>(user);
@@ -48,25 +48,7 @@ namespace TradingDiary.Controllers
         [Authorize(Policy = "RequireUserRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<string>> RenameUser([FromBody]string newName)
-        {
-            var userId = this.GetUserIdByClaims();
-
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
-            {
-               return NotFound("User not found");
-            }
-
-            await _userManager.SetUserNameAsync(user, newName);
-            return Ok(newName);
-        }
-
-        [HttpPost("reset-password")]
-        [Authorize(Policy = "RequireUserRole")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> ResetPassword([FromQuery]string resetToken, [FromBody] string newPassword)
+        public async Task<ActionResult<string>> RenameUser([FromBody] string newName)
         {
             var userId = this.GetUserIdByClaims();
 
@@ -75,8 +57,24 @@ namespace TradingDiary.Controllers
             {
                 return NotFound("User not found");
             }
-            
-            resetToken = resetToken.Replace('%', '/');
+
+            await _userManager.SetUserNameAsync(user, newName);
+            return Ok(newName);
+        }
+
+        [HttpPost("reset-password/{resetToken}&{email}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ResetPassword([FromRoute]string resetToken, [FromRoute] string email, [FromBody] string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            resetToken = Uri.UnescapeDataString(resetToken);
             var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
             if (!result.Succeeded) 
             {

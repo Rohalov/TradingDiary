@@ -77,7 +77,7 @@ function Login() {
                 localStorage.setItem("token", data)
                 navigate("/trades");
             } else {
-                setErrorMessage(data.errors[0].description);
+                setErrorMessage(data);
             }
         } catch (error) {
             console.log(error);
