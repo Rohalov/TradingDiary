@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaArrowRight } from "react-icons/fa";
 import './ResetPassword.css'
 
 
@@ -19,12 +20,20 @@ function ResetPassword() {
                 <h3 className="web-title">Зміна паролю</h3>
                 <form>
                     <div className="panel">
-                        <h5 className="panel-title">Введіть новий пароль</h5>
-                        <input className="panel-input" type="text" onChange={handleInputChange} />
+                        <div className="panel-block">
+                            <h5 className="panel-title">Введіть новий пароль</h5>
+                            <h5 className="panel-subtitle">Переконайcя в надійності</h5>
+                        </div>
+
+                        <div className="panel-block">
+                            <input className="panel-input" type="text" value={newPassword} placeholder="Новий пароль" onChange={handleInputChange} />
+                        </div>
 
                         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-                        <button className="panel-button" onClick={resetPassword}>Змінити</button>
+                        <div className="panel-block">
+                            <button className="panel-button" onClick={resetPassword}><FaArrowRight className="arrow-icon"/></button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -47,7 +56,7 @@ function ResetPassword() {
             body: JSON.stringify(newPassword)
         });
         const data = await responce.json();
-        if (!responce.ok) {
+        if (responce.status != 200) {
             setErrorMessage(data.errors[0].description);
         }
     }
