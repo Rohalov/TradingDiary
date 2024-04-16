@@ -27,12 +27,12 @@ function ResetPassword() {
 
                         <div className="panel-block">
                             <input className="panel-input" type="text" value={newPassword} placeholder="Новий пароль" onChange={handleInputChange} />
+                            {errorMessage && <div className="error-message">{errorMessage}</div>}
                         </div>
 
-                        {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                         <div className="panel-block">
-                            <button className="panel-button" onClick={resetPassword}><FaArrowRight className="arrow-icon"/></button>
+                            <button className="panel-button" onClick={resetPassword}><FaArrowRight className="arrow-icon" /></button>
                         </div>
                     </div>
                 </form>
@@ -47,7 +47,8 @@ function ResetPassword() {
         return token;
     }
 
-    async function resetPassword() {
+    async function resetPassword(e) {
+        e.preventDefault();
         const responce = await fetch(`/api/Users/reset-password/${resetToken}`, {
             method: 'POST',
             headers: {
