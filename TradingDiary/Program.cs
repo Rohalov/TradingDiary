@@ -25,7 +25,11 @@ internal class Program
 
         ConfigureServices(builder);
 
-        Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoApi:ApiKey"]);
+        var config = new ConfigurationBuilder()
+            .AddUserSecrets<Program>()
+            .Build();      
+
+        Configuration.Default.ApiKey.Add("api-key", config["BrevoApi:ApiKey"]);
 
         var app = builder.Build();
 

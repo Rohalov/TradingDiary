@@ -11,12 +11,10 @@ namespace TradingDiary.Controllers
     public class EmailController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _config;
 
-        public EmailController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public EmailController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _config = configuration;
         }
 
         [HttpPost]
@@ -25,11 +23,15 @@ namespace TradingDiary.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> SendResetPasswordMessage([FromBody] string email)
         {
-            var user =  await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return BadRequest("User with this email does not exist");
             }
+
+            var _config = new ConfigurationBuilder()
+                .AddUserSecrets<EmailController>()
+                .Build();
 
             string emailSender = _config["BrevoApi:SenderEmail"];
             string nameSender = _config["BrevoApi:SenderName"];
@@ -38,7 +40,7 @@ namespace TradingDiary.Controllers
 
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            string resetUrl = $"http://localhost:5173/resetpassword/{resetToken.Replace('/','%')}";
+            string resetUrl = $"http://localhost:5173/resetpassword/{resetToken.Replace('/', '%')}";
             string htmlContent = $"<html><body><h1>Запит на зміну пароля</h1><p>Вітаю,{user.UserName}<p>" +
                 $"<p>Ми отримали запит на зміну паролю від твого аккаунту. Якщо ви не надсилали запит на зміну пароля, проігноруйте цей електронний лист, у вашому обліковому записі не буде внесено жодних змін. </p>" +
                 $"<p>Щоб змінити пароль, перейдіть за посиланням нижче:</p><p>{resetUrl}</p></body></html>";
