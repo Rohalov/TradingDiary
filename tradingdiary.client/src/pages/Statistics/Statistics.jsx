@@ -5,13 +5,10 @@ import Navbar from '../../components/Navbar/Navbar';
 import StackedBarChar from './Charts/StackedBarChart';
 import TradeBox from './TradeBox';
 import { service } from '../../api/statisticsService';
+import DateForm from './DateForm';
 
 function Statistics() {
     const [stat, setStat] = useState("");
-    const [formData, setFormData] = useState({
-        from: "",
-        to: ""
-    });
     const [dateFormOpen, setDateFormOpen] = useState(false);
     const [checkAuth] = useContext(AuthContext);
 
@@ -20,29 +17,9 @@ function Statistics() {
         getStat();
     }, [])
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const dateForm =
-        <div className="date-container">
-            <form>
-                <div className="input-date-block">
-                    <label htmlFor="from">Від:</label>
-                    <input type="date" name="from" onChange={handleInputChange} required></input>
-                </div>
-
-                <div className="input-date-block">
-                    <label htmlFor="to">До:</label>
-                    <input type="date" name="to" onChange={handleInputChange} required></input>
-                </div>
-
-                <div className="submit-btn">
-                    <button type="submit" onClick={() => { setDateFormOpen(false); getStat('custom'); }}>Підтвердити</button>
-                </div>
-            </form>
-        </div>
+    const handleData = (data) => {
+        setStat(data);
+    }
 
     return (
         <div className="container-stat">
@@ -53,7 +30,12 @@ function Statistics() {
                 <button onClick={() => getStat()}>Цей місяць</button>
                 <button onClick={() => getStat('all')}>Всі угоди</button>
                 <button onClick={() => setDateFormOpen(true)}>Обрати період</button>
-                {dateFormOpen && dateForm}
+                {dateFormOpen && <div className="date-form">
+                    <DateForm closeDateForm={() => setDateFormOpen(false)}
+                        setData={handleData}
+                    />
+                </div>
+                }
             </div>
 
             <div className="main-content">
@@ -157,24 +139,21 @@ function Statistics() {
         </div>
     )
 
-    async function getStat(type) {
-        let data;
-        switch (type) {
-            case 'custom':
-                data = await service.getCustomStat(formData.from, formData.to);
-                break;
-            case 'week':
-                data = await service.getStatisticForWeek();
-                break;
-            case 'all':
-                data = await service.getAllTimeStat();
-                break;
-            default:
-                data = await service.getStatisticForMonth();
-                break;
+        async function getStat(type) {
+            let data;
+            switch (type) {
+                case 'week':
+                    data = await service.getStatisticForWeek();
+                    break;
+                case 'all':
+                    data = await service.getAllTimeStat();
+                    break;
+                default:
+                    data = await service.getStatisticForMonth();
+                    break;
+            }
+            setStat(data);
         }
-        setStat(data);
     }
-}
 
-export default Statistics
+    export default Statistics

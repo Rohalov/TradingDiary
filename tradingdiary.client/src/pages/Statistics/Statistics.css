@@ -1,66 +1,35 @@
-.container-stat{
+.container-stat {
     margin-top: 100px;
 }
 
-.main-content{
+.main-content {
     margin-top: 20px;
 }
 
-.menu{
+.menu {
     display: flex;
     align-items: flex-start;
     gap: 10px;
 }
 
-.menu button{
-    border: 0;
-    background-color: rgb(50, 53, 70);
-    width: 15%;
-    padding: 5px;
-}
+    .menu button {
+        border: 0;
+        background-color: rgb(50, 53, 70);
+        width: 15%;
+        padding: 5px;
+    }
 
-.menu button:hover{
-    background: rgb(34, 37, 49);
-}
+        .menu button:hover {
+            background: rgb(34, 37, 49);
+        }
 
-.date-container{
-    padding: 1.2em;
+.date-form {
     position: absolute;
     right: 40%;
-    background-color: #191b23;
     z-index: 100;
-    border: 1px solid #323546;
-    border-radius: 6px;
 }
 
-.input-date-block{
-    padding: 6px 0;
-}
-
-.input-date-block input{
-    padding: 2px;
-    background-color: rgb(23, 25, 36);
-    border: 1px solid rgb(64, 66, 78);
-}
-
-.input-date-block input:hover{
-    border-color: rgb(56, 97, 251);
-}
-
-.submit-btn{
-    padding-top: 14px;
-}
-
-.submit-btn button{
-    border: 1px solid #323546;
-    width: 100%;
-}
-
-.submit-btn button:hover{
-    border-color: #3152c9;
-}
-
-.statistic-grid{
+.statistic-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: auto;
@@ -68,20 +37,20 @@
     gap: 32px;
 }
 
-.section-block{
+.section-block {
     position: relative;
     border: 1px solid #323546;
     border-radius: 12px;
     padding: 24px;
 }
 
-.section-grid{
+.section-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
 }
 
-.info-block{
+.info-block {
     display: flex;
     flex-direction: column;
     row-gap: 40px;
@@ -89,18 +58,18 @@
     height: 120px;
 }
 
-.base-text{
+.base-text {
     text-align: start;
     font-size: 20px;
     font-weight: 500;
 }
 
-.main-text{
+.main-text {
     text-align: start;
     font-size: 30px;
 }
 
-.trade-card{
+.trade-card {
     display: flex;
     flex-direction: column;
     row-gap: 30px;
