@@ -14,7 +14,5 @@ namespace TradingDiary.Models.Services
         public Trade WorstTrade { get; set; }
         public decimal AvgRiskReward { get; set; }
         public decimal AvgRisk { get; set; }
-        public string BestTradingPair { get; set; }
-        public string WorstTradingPair { get; set; }
     }
 }

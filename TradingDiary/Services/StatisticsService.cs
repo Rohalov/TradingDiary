@@ -86,8 +86,6 @@ namespace TradingDiary.Services
                 WorstTrade = null,
                 AvgRiskReward = 0,
                 AvgRisk = 0,
-                BestTradingPair = "-",
-                WorstTradingPair = "-"
             };
 
 
@@ -105,8 +103,6 @@ namespace TradingDiary.Services
                     key = t.Key,
                     avg = trades.Where(x => x.Pair == t.Key).Select(x => x.ProfitLoss).Average()
                 });
-                var bestp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Max()).ToList().Select(t => t.key).FirstOrDefault();
-                var worstp = pairs.Where(x => x.avg == pairs.Select(x => x.avg).Min()).ToList().Select(t => t.key).FirstOrDefault();
 
                 result = new StatisticModel
                 {
@@ -120,8 +116,6 @@ namespace TradingDiary.Services
                     WorstTrade = worstTrade,
                     AvgRiskReward = Math.Round(avgRR, 3),
                     AvgRisk = Math.Round(avgRisk, 3),
-                    BestTradingPair = bestp,
-                    WorstTradingPair = worstp
                 };
             }
             return result;
