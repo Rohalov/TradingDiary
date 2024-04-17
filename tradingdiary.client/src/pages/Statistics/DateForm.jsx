@@ -33,7 +33,8 @@ function DateForm({ closeDateForm, setData }) {
         </div>
     )
 
-    async function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault();
         const data = await service.getCustomStat(formData.from, formData.to);
         setData(data);
         closeDateForm();
