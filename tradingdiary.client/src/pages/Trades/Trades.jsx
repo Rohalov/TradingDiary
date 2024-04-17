@@ -13,7 +13,7 @@ function Trades() {
     const [tradeData, setTradeData] = useState(null);
     const [currentTradeId, setCurrentTradeId] = useState();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [token, checkAuth] = useContext(AuthContext);
+    const [checkAuth] = useContext(AuthContext);
 
 
     useEffect(() => {

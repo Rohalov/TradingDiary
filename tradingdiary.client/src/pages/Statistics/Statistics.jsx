@@ -4,6 +4,7 @@ import './Statistics.css'
 import Navbar from '../../components/Navbar/Navbar';
 import StackedBarChar from './Charts/StackedBarChart';
 import TradeBox from './TradeBox';
+import { service } from '../../api/statisticsService';
 
 function Statistics() {
     const [stat, setStat] = useState("");
@@ -12,11 +13,11 @@ function Statistics() {
         to: ""
     });
     const [dateFormOpen, setDateFormOpen] = useState(false);
-    const [token, checkAuth] = useContext(AuthContext);
+    const [checkAuth] = useContext(AuthContext);
 
     useEffect(() => {
         checkAuth();
-        getStatisticForMonth();
+        getStat();
     }, [])
 
     const handleInputChange = (e) => {
@@ -38,7 +39,7 @@ function Statistics() {
                 </div>
 
                 <div className="submit-btn">
-                    <button type="submit" onClick={() => { setDateFormOpen(false); getCustomStat(); }}>Підтвердити</button>
+                    <button type="submit" onClick={() => { setDateFormOpen(false); getStat('custom'); }}>Підтвердити</button>
                 </div>
             </form>
         </div>
@@ -48,9 +49,9 @@ function Statistics() {
             <Navbar />
 
             <div className="menu">
-                <button onClick={getStatisticForWeek}>Цей тиждень</button>
-                <button onClick={getStatisticForMonth}>Цей місяць</button>
-                <button onClick={getAllTimeStat}>Всі угоди</button>
+                <button onClick={() => getStat('week')}>Цей тиждень</button>
+                <button onClick={() => getStat()}>Цей місяць</button>
+                <button onClick={() => getStat('all')}>Всі угоди</button>
                 <button onClick={() => setDateFormOpen(true)}>Обрати період</button>
                 {dateFormOpen && dateForm}
             </div>
@@ -156,59 +157,22 @@ function Statistics() {
         </div>
     )
 
-    async function getCustomStat() {
-        const responce = await fetch(`/api/Statistics/custom?from=${formData.from}&to=${formData.to}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        setStat(data);
-    }
-
-    async function getStatisticForWeek() {
-        const responce = await fetch('/api/Statistics/for-week', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        setStat(data);
-    }
-
-    async function getStatisticForMonth() {
-        const responce = await fetch('/api/Statistics/for-month', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        setStat(data);
-    }
-
-    async function getAllTimeStat() {
-        const responce = await fetch('/api/Statistics/all-time', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
+    async function getStat(type) {
+        let data;
+        switch (type) {
+            case 'custom':
+                data = await service.getCustomStat(formData.from, formData.to);
+                break;
+            case 'week':
+                data = await service.getStatisticForWeek();
+                break;
+            case 'all':
+                data = await service.getAllTimeStat();
+                break;
+            default:
+                data = await service.getStatisticForMonth();
+                break;
+        }
         setStat(data);
     }
 }

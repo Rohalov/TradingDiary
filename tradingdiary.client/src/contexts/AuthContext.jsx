@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext(null);
 
+export const token = localStorage.getItem("token");
+
 export const AuthProvider = (props) => {
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
     const checkAuth = () => {
@@ -16,7 +17,7 @@ export const AuthProvider = (props) => {
     }
 
     return (
-        <AuthContext.Provider value={[token, checkAuth]}>
+        <AuthContext.Provider value={[checkAuth]}>
             {props.children}
         </AuthContext.Provider>
     );
