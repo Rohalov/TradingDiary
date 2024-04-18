@@ -3,13 +3,14 @@ import Navbar from '../../components/Navbar/Navbar';
 import { AuthContext } from '../../contexts/AuthContext';
 import './Settings.css';
 import Sidebar from './Sidebar';
+import service from '../../api/UserService';
 
 function Settings() {
     const [userData, setUserData] = useState({
         userName: '',
         email: ''
     });
-    const [token, checkAuth] = useContext(AuthContext);
+    const [checkAuth] = useContext(AuthContext);
 
     useEffect(() => {
         checkAuth();
@@ -29,7 +30,7 @@ function Settings() {
 
             <div className="main-block">
                 <Sidebar />
-                
+
                 <div className="box">
                     <div className="box-header">
                         Профіль
@@ -49,12 +50,12 @@ function Settings() {
                                 Email
                             </div>
                             <div className="item-input">
-                                <input className='disabled-input' type="text" placeholder="Email" value={userData.email} disabled/>
+                                <input className='disabled-input' type="text" placeholder="Email" value={userData.email} disabled />
                             </div>
                         </div>
 
-                        <button className="save-button" onClick={saveUserData}>Зберегти</button>
-                        
+                        <button className="save-button" onClick={() => { service.saveUserData(userData.userName) }}>Зберегти</button>
+
                         <div className="settings-item" id='password-setting'>
                             <div className="item-label">
                                 Пароль
@@ -68,32 +69,8 @@ function Settings() {
     )
 
     async function getUserData() {
-        const responce = await fetch('/api/Users', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
+        const data = await service.getUserData();
         setUserData(data);
-    }
-
-    async function saveUserData(){
-        const responce = await fetch('/api/Users/rename', {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData.userName)
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
     }
 }
 
