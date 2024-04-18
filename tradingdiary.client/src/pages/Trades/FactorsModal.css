@@ -1,0 +1,9 @@
+.factors-modal {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 370px;
+    background-color: #222531;
+    padding: 0.8em;
+}

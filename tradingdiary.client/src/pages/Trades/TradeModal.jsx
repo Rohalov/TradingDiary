@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from 'react'
-import { AuthContext } from '../../contexts/AuthContext';
+import { useState, useEffect } from 'react';
+import service from '../../api/TradingPairsService';
+import FactorsModal from './FactorsModal';
 import './TradeModal.css';
 
 function TradeModal({ closeModal, onSubmit, defaultValue }) {
-    const [entryFactors, setEntryFactors] = useState([]);
     const [modalData, setModalData] = useState(
         defaultValue || {
             pair: "",
@@ -18,12 +18,10 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
     );
     const [pairs, setPairs] = useState([]);
     const [factorsModalOpen, setFactorsModalOpen] = useState(false);
-    const [token,] = useContext(AuthContext);
     const date = modalData.date.split('T')[0];
 
     useEffect(() => {
-        getAllTradingPair();
-        getEntryFactors();
+        getPairs();
     }, [])
 
     const handleInputChange = (e) => {
@@ -43,21 +41,6 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
             setModalData({ ...modalData, entryfactors: ef });
         }
     }
-
-    const entryFactorsModal =
-        <div className="modal-container">
-            <div className="factors-modal">
-                {entryFactors.map((factor) =>
-                    <div className="factor-checkbox" key={factor.id}>
-                        <label htmlFor={factor.name}>{factor.name}</label>
-                        {
-                            <input type="checkbox" name={factor.name} onChange={handleChooseFactor} checked={isChecked(factor.name)}></input>
-                        }
-                    </div>
-                )}
-                <button onClick={() => setFactorsModalOpen(false)}>Підтвердити</button>
-            </div>
-        </div>
 
     return (
         <div className="modal-container">
@@ -113,7 +96,11 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
                         <div className='input-block'>
                             <button onClick={() => setFactorsModalOpen(true)}>Обрати</button>
                         </div>
-                        {factorsModalOpen && entryFactorsModal}
+                        {factorsModalOpen && <FactorsModal
+                            closeModal={() => setFactorsModalOpen(false)}
+                            handleChange={handleChooseFactor}
+                            selectedFactors={modalData.entryFactors}
+                        />}
                     </div>
 
                     <div className="form-group">
@@ -176,36 +163,9 @@ function TradeModal({ closeModal, onSubmit, defaultValue }) {
         closeModal();
     }
 
-    function isChecked(value) {
-        return modalData.entryFactors.includes(value);
-    }
-
-    async function getEntryFactors() {
-        const responce = await fetch('/api/EntryFactors', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        setEntryFactors(data);
-        console.log(data);
-    }
-
-    async function getAllTradingPair() {
-        const responce = await fetch('/api/TradingPairs', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        setPairs(data);
+    async function getPairs() {
+        const pairs = await service.getAllTradingPair();
+        setPairs(pairs);
     }
 }
 
