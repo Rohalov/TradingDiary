@@ -2,64 +2,6 @@
     margin-top: 84px;
 }
 
-.table{
-    width: 100%;
-    font-size: 14px;
-    border-spacing: 0;
-}
-
-.table thead{
-    position: sticky;
-    top: 0;
-    box-sizing: border-box;
-}
-
-#text-start{
-    text-align: start;
-}
-
-#text-end{
-    text-align: end;
-}
-
-.table thead th{
-    background-color: #0D1421;
-    font-size: 12px;
-}
-
-.table th{
-    padding: 5px;
-}
-
-.table td{
-    vertical-align: middle;
-    padding: 5px 10px;
-}
-
-.table th, td{
-    border-bottom: 1px solid #323546;
-}
-
-.table tr:hover{
-    background-color: #222531;
-}
-
-.table-btn{
-    display: inline-block;
-    border: 0;
-    padding: 5px;
-    height: 34px;
-    background-color: rgba(0,0,0,0);
-}
-
-#edit-btn:hover{
-    color: orange;
-}
- 
-#delete-btn:hover{
-    color: red;
-}
-
 .add-button button{
     width: 100%;
     border-radius: 0;
@@ -77,23 +19,4 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.4);
-}
-
-.confirm-modal{
-   background-color: black;
-   border-radius: 10px;
-   border: 1px solid white;
-   padding: 2%; 
-}
-
-.confirm-btn{
-    float: inline-start;
-    margin-left: 10%;
-    width: 30%;
-}
-
-.cancel-btn{
-    float: inline-end;
-    margin-right: 10%;
-    width: 30%;
 }

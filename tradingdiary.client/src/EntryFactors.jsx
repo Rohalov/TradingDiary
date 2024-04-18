@@ -1,5 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from './contexts/AuthContext';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+
 
 function EntryFactors() {
     const [factors, setFactors] = useState([]);
@@ -28,18 +30,6 @@ function EntryFactors() {
         setEditModalOpen(false);
     };
 
-    const handleDeleteFactor = () => {
-        deleteFactor();
-        setConfirmModalOpen(false);
-    };
-
-    const confirmModal =
-        <div className="confirm-modal">
-            <p></p>
-            <button onClick={handleDeleteFactor}>Confirm</button>
-            <button onClick={() => setConfirmModalOpen(false)}>Cancel</button>
-        </div>
-
     const editModal =
         <div className="edit-modal">
             <form onSubmit={handleEditFactor}>
@@ -62,7 +52,11 @@ function EntryFactors() {
             </div>
 
             {editModalOpen && editModal}
-            {confirmModalOpen && confirmModal}
+            {confirmModalOpen && <ConfirmModal
+                closeModal={() => setConfirmModalOpen(false)}
+                handleSubmit={deleteFactor}
+                title='Видалити фактор?'
+            />}
 
             <div className="add-block">
                 <form>
