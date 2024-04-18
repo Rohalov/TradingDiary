@@ -30,3 +30,5 @@ async function get(url) {
     console.log(data);
     return (data);
 }
+
+export default service

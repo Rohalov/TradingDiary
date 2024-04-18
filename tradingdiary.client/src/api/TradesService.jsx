@@ -51,3 +51,5 @@ export const service = {
         return data;
     }
 };
+
+export default service
