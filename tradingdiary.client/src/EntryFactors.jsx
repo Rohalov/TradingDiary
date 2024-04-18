@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from 'react'
-import { AuthContext } from './contexts/AuthContext';
+import { useState, useEffect } from 'react'
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+import service from './api/EntryFactorsService';
 
 
 function EntryFactors() {
@@ -9,10 +9,9 @@ function EntryFactors() {
     const [factorData, setFactorData] = useState();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const [token,] = useContext(AuthContext);
 
     useEffect(() => {
-        getEntryFactors();
+        getFactors();
     }, [])
 
     const handleInputChange = (e) => {
@@ -25,10 +24,6 @@ function EntryFactors() {
         setFactorData({ ...factorData, name: value })
     };
 
-    const handleEditFactor = () => {
-        updateFactor();
-        setEditModalOpen(false);
-    };
 
     const editModal =
         <div className="edit-modal">
@@ -54,7 +49,7 @@ function EntryFactors() {
             {editModalOpen && editModal}
             {confirmModalOpen && <ConfirmModal
                 closeModal={() => setConfirmModalOpen(false)}
-                handleSubmit={deleteFactor}
+                handleSubmit={handleDeleteFactor}
                 title='Видалити фактор?'
             />}
 
@@ -72,69 +67,25 @@ function EntryFactors() {
         </div>
     )
 
-    async function getEntryFactors() {
-        const responce = await fetch('/api/EntryFactors/GetAllUserEntryFactors', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
+    async function getFactors() {
+        const data = await service.getEntryFactors();
         setFactors(data);
     }
 
-    async function addFactor(e) {
-        e.preventDefault();
-        const responce = await fetch('/api/EntryFactors/AddEntryFactor', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(newFactor)
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        getEntryFactors();
+    async function addFactor() {
+        await service.addFactor(newFactor);
+        await getFactors();
     }
 
-    async function deleteFactor() {
-        const responce = await fetch(`/api/EntryFactors/DeleteEntryFactor?factorId=${factorData.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        getEntryFactors();
+    async function handleEditFactor() {
+        await service.updateFactor(factorData.id, factorData.name);
+        setEditModalOpen(false);
+        await getFactors();
     }
 
-
-    async function updateFactor() {
-        const name = {
-            name: factorData.name
-        };
-        const responce = await fetch(`/api/EntryFactors/UpdateEntryFactor?factorId=${factorData.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(name)
-        })
-            .catch(error => console.error('Error:', error));
-
-        const data = await responce.json();
-        console.log(data);
-        getEntryFactors();
+    async function handleDeleteFactor() {
+        await service.deleteFactor(factorData.id);
+        await getFactors();
     }
 }
 
