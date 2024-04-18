@@ -4,7 +4,7 @@ import './Statistics.css'
 import Navbar from '../../components/Navbar/Navbar';
 import StackedBarChar from './Charts/StackedBarChart';
 import TradeBox from './TradeBox';
-import { service } from '../../api/statisticsService';
+import { service } from '../../api/StatisticsService';
 import DateForm from './DateForm';
 
 function Statistics() {
