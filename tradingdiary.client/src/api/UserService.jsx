@@ -26,6 +26,20 @@ export const service = {
         const data = await responce.json();
         console.log(data);
         return data;
+    },
+
+    async resetPassword(resetToken, newPassword, setErrorMessage) {
+        const responce = await fetch(`/api/Users/reset-password/${resetToken}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newPassword)
+        });
+        const data = await responce.json();
+        if (responce.status != 200) {
+            setErrorMessage(data.errors[0].description);
+        }
     }
 }
 

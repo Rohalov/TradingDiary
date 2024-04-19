@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import './ResetPassword.css'
+import service from "../../api/UserService";
 
 
 function ResetPassword() {
@@ -26,13 +27,13 @@ function ResetPassword() {
                         </div>
 
                         <div className="panel-block">
-                            <input className="panel-input" type="text" value={newPassword} placeholder="Новий пароль" onChange={handleInputChange} />
+                            <input className="panel-input" type="text" value={newPassword} placeholder="Новий пароль" onChange={handleInputChange} required/>
                             {errorMessage && <div className="error-message">{errorMessage}</div>}
                         </div>
 
 
                         <div className="panel-block">
-                            <button className="panel-button" onClick={resetPassword}><FaArrowRight className="arrow-icon" /></button>
+                            <button className="panel-button" onClick={handleSubmit}><FaArrowRight className="arrow-icon" /></button>
                         </div>
                     </div>
                 </form>
@@ -47,19 +48,9 @@ function ResetPassword() {
         return token;
     }
 
-    async function resetPassword(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        const responce = await fetch(`/api/Users/reset-password/${resetToken}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newPassword)
-        });
-        const data = await responce.json();
-        if (responce.status != 200) {
-            setErrorMessage(data.errors[0].description);
-        }
+        await service.resetPassword(resetToken, newPassword, setErrorMessage)
     }
 }
 
