@@ -79,9 +79,9 @@ function Trades() {
 
     async function handleSubmit(trade) {
         if (tradeData == null) {
-            service.addTrade(trade);
+            await service.addTrade(trade);
         } else {
-            service.updateTrade(currentTradeId, trade);
+            await service.updateTrade(currentTradeId, trade);
         }
         await updateData();
     }
