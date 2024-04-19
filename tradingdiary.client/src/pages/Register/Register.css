@@ -11,8 +11,7 @@
 
 .register-modal {
   display: flex;
-  width: 308px;
-  height: 430px;
+  width: 320px;
   flex-direction: column;
   border-radius: 16px;
   box-sizing: border-box;
