@@ -3,6 +3,7 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import service from '../../api/EntryFactorsService';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Navbar from '../../components/Navbar/Navbar';
+import EditFactorModal from './EditFactorModal';
 import './EntryFactors.css';
 
 
@@ -26,16 +27,6 @@ function EntryFactors() {
         const { value } = e.target;
         setFactorData({ ...factorData, name: value })
     };
-
-
-    const editModal =
-        <div className="edit-modal">
-            <form onSubmit={handleEditFactor}>
-                <input type="text" name="factor" value={factorData == undefined ? "" : factorData.name} onChange={handleFactorDataNameChange} required></input>
-                <button type="submit">Edit</button>
-                <button onClick={() => setEditModalOpen(false)}>Cancel</button>
-            </form>
-        </div>
 
     return (
         <div className="settings-container">
@@ -62,7 +53,13 @@ function EntryFactors() {
                             )}
                         </div>
 
-                        {editModalOpen && editModal}
+                        {editModalOpen && <EditFactorModal
+                            closeModal={() => setEditModalOpen(false)}
+                            handleSubmit={handleEditFactor}
+                            handleNameChange={handleFactorDataNameChange}
+                            name={factorData.name}
+                        />}
+
                         {confirmModalOpen && <ConfirmModal
                             closeModal={() => setConfirmModalOpen(false)}
                             handleSubmit={handleDeleteFactor}
