@@ -4,12 +4,14 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './Settings.css';
 import Sidebar from './Sidebar';
 import service from '../../api/UserService';
+import ForgotModal from '../../components/ForgotModal/ForgotModal';
 
 function Settings() {
     const [userData, setUserData] = useState({
         userName: '',
         email: ''
     });
+    const [forgotModalOpen, setForgotModalOpen] = useState(false);
     const [checkAuth] = useContext(AuthContext);
 
     useEffect(() => {
@@ -60,7 +62,8 @@ function Settings() {
                             <div className="item-label">
                                 Пароль
                             </div>
-                            <button>Змінити</button>
+                            <button onClick={() => setForgotModalOpen(true)}>Змінити</button>
+                            {forgotModalOpen && <ForgotModal closeModal={() => setForgotModalOpen(false)} />}
                         </div>
                     </div>
                 </div>
