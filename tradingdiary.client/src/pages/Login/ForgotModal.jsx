@@ -1,5 +1,6 @@
 import { useState } from "react";
 import './ForgotModal.css'
+import service from '../../api/EmailService';
 import { MdOutgoingMail } from "react-icons/md";
 
 function ForgotModal({ closeModal }) {
@@ -68,19 +69,7 @@ function ForgotModal({ closeModal }) {
 
     async function send(e) {
         e.preventDefault();
-        const responce = await fetch('/api/Email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(email)
-        })
-        const data = await responce.text();
-        if (responce.status == 200) {
-            setEmailSent(true);
-        } else {
-            setErrorMessage(data);
-        }
+        await service.sendForgotMessage(email, setEmailSent, setErrorMessage);
     }
 }
 
