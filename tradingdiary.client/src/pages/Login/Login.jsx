@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ForgotModal from './ForgotModal';
+import ForgotModal from '../../components/ForgotModal/ForgotModal';
 import service from '../../api/AuthService';
 import './Login.css'
 
