@@ -28,7 +28,7 @@ function Login() {
         <div className="login-container">
             <div className="login-modal">
                 <form onSubmit={handleSubmit}>
-                    <h1>Login</h1>
+                    <h1>Вхід</h1>
                     <div className="input-box">
                         <input type="text" name="userName" value={userData.userName}
                             placeholder="Ім'я користувача" onChange={handleInputChange} required autoFocus />

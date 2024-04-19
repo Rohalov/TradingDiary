@@ -22,7 +22,7 @@ function Register() {
         <div className="register-container">
             <div className='register-modal'>
                 <form onSubmit={handleSubmit}>
-                    <h1>Register</h1>
+                    <h1>Реєстрація</h1>
                     <div className="input-box">
                         <input type="text" name="userName" value={userData.userName}
                             placeholder="Ім'я користувача" onChange={handleInputChange} required />
