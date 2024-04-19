@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import { AuthContext } from '../../contexts/AuthContext';
 import './Settings.css';
-import Sidebar from './Sidebar';
+import Sidebar from '../../components/Sidebar/Sidebar';
 import service from '../../api/UserService';
 import ForgotModal from '../../components/ForgotModal/ForgotModal';
 
@@ -31,7 +31,7 @@ function Settings() {
             </div>
 
             <div className="main-block">
-                <Sidebar />
+                <Sidebar active="profile" />
 
                 <div className="box">
                     <div className="box-header">
@@ -63,8 +63,8 @@ function Settings() {
                                 Пароль
                             </div>
                             <button onClick={() => setForgotModalOpen(true)}>Змінити</button>
-                            {forgotModalOpen && <ForgotModal closeModal={() => setForgotModalOpen(false)} />}
                         </div>
+                        {forgotModalOpen && <ForgotModal closeModal={() => setForgotModalOpen(false)} />}
                     </div>
                 </div>
             </div>
