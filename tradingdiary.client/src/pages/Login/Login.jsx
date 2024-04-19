@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ForgotModal from './ForgotModal';
+import service from '../../api/AuthService';
 import './Login.css'
 
 function Login() {
@@ -63,25 +64,7 @@ function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        try {
-            const responce = await fetch('/api/Authentication/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            })
-            const data = await responce.text();
-            console.log(data);
-            if (responce.status == 200) {
-                localStorage.setItem("token", data)
-                navigate("/trades");
-            } else {
-                setErrorMessage(data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        await service.login(userData, navigate, setErrorMessage);
     }
 }
 

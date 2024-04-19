@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import service from '../../api/AuthService';
 import './Register.css'
 
 function Register() {
@@ -57,21 +58,7 @@ function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const responce = await fetch('/api/Authentication/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
-
-        const data = await responce.json();
-        if (responce.status == 201) {
-            navigate("/login");
-        } else {
-            setErrorMessage(data.errors[0].description);
-        }
-        console.log(data);
+        await service.register(userData, navigate, setErrorMessage);
     }
 }
 
