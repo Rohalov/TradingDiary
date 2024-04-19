@@ -1,18 +1,20 @@
 import { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import service from '../api/AuthService';
 
 export const AuthContext = createContext(null);
 
-export const token = localStorage.getItem("token");
+let token
 
 export const AuthProvider = (props) => {
     const navigate = useNavigate();
+    token = localStorage.getItem("token");
 
-    const checkAuth = () => {
+    const checkAuth = async () => {
         if (token == null) {
             navigate("/login");
         } else {
-            checkToken();
+            await service.checkToken();
         }
     }
 
@@ -21,16 +23,6 @@ export const AuthProvider = (props) => {
             {props.children}
         </AuthContext.Provider>
     );
-
-    async function checkToken() {
-        const responce = await fetch('/api/Authentication/jwt-token', {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        const data = await responce.text();
-        console.log(data);
-        localStorage.setItem("token", data)
-    }
 };
+
+export { token } 
