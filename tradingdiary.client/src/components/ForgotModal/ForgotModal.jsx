@@ -2,6 +2,7 @@ import { useState } from "react";
 import './ForgotModal.css'
 import service from '../../api/EmailService';
 import { MdOutgoingMail } from "react-icons/md";
+import CloseIcon from "../CloseIcon";
 
 function ForgotModal({ closeModal }) {
     const [email, setEmail] = useState("");
@@ -55,9 +56,7 @@ function ForgotModal({ closeModal }) {
             <div className="forgot-modal">
                 <div className="close-button">
                     <button onClick={closeModal}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24px" width="24px" viewBox="0 0 24 24">
-                            <path d="M18 6L6 18M18 18L6 6" stroke="currentColor" stroke-width="1" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
+                        <CloseIcon height="24" width="24" />
                     </button>
                 </div>
 

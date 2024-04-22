@@ -1,5 +1,6 @@
 import directionValues from '../../data/directions.json';
 import resultValues from '../../data/results.json';
+import CloseIcon from '../../components/CloseIcon';
 import './TradesTable.css';
 
 function TradesTable({ handleEdit, handleDelete, trades }) {
@@ -40,9 +41,7 @@ function TradesTable({ handleEdit, handleDelete, trades }) {
                                 </svg>
                             </button>
                             <button className="table-btn" id="delete-btn" onClick={() => handleDelete(trade.id)}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24px" width="24px" viewBox="0 0 24 24">
-                                    <path d="M18 6L6 18M18 18L6 6" stroke="currentColor" stroke-width="1" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
+                                <CloseIcon height="24" width="24" />
                             </button>
                         </td>
                     </tr>
