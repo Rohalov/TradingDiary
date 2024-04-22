@@ -4,6 +4,7 @@ import service from '../../api/EntryFactorsService';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Navbar from '../../components/Navbar/Navbar';
 import EditFactorModal from './EditFactorModal';
+import { MdEdit, MdDeleteOutline } from "react-icons/md";
 import './EntryFactors.css';
 
 
@@ -43,15 +44,30 @@ function EntryFactors() {
                     </div>
 
                     <div className="factors-container">
-                        <div className="show-block">
-                            {factors.map(factor =>
-                                <div key={factor.id} className="factor-block">
-                                    {factor.name}
-                                    <button className="edit-btn" onClick={() => { setEditModalOpen(true); setFactorData(factor); }}>Edit</button>
-                                    <button className="delete-btn" onClick={() => { setConfirmModalOpen(true); setFactorData(factor); }}>Del</button>
+                        {factors.map((factor, index) =>
+                            <div key={index} className="factor-grid">
+                                <div className="grid-item">
+                                    {index + 1}
                                 </div>
-                            )}
-                        </div>
+
+                                <div className="grid-item">
+                                    {factor.name}
+                                </div>
+
+                                <div className="grid-item btn">
+                                    <button className="grid-btn edit-btn" onClick={() => { setEditModalOpen(true); setFactorData(factor); }}>
+                                        <MdEdit size={24} />
+                                    </button>
+                                </div>
+
+                                <div className="grid-item btn">
+                                    <button className="grid-btn delete-btn" onClick={() => { setConfirmModalOpen(true); setFactorData(factor); }}>
+                                        <MdDeleteOutline size={24} />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
 
                         {editModalOpen && <EditFactorModal
                             closeModal={() => setEditModalOpen(false)}
@@ -67,14 +83,16 @@ function EntryFactors() {
                         />}
 
                         <div className="add-block">
-                            <form>
+                            <form className='add-form'>
+                                <div className="add-label">
+                                    Додати фактори
+                                </div>
+
                                 <div className="input-block">
                                     <input type="text" name="name" onChange={handleInputChange} required></input>
                                 </div>
 
-                                <div className="add-btn">
-                                    <button type="submit" onClick={addFactor}>Add</button>
-                                </div>
+                                <button className="add-btn" type="submit" onClick={addFactor}>Додати</button>
                             </form>
                         </div>
                     </div>
@@ -88,7 +106,8 @@ function EntryFactors() {
         setFactors(data);
     }
 
-    async function addFactor() {
+    async function addFactor(e) {
+        e.preventDefault();
         await service.addFactor(newFactor);
         await getFactors();
     }
