@@ -2,7 +2,7 @@ import { useState } from "react";
 import './ForgotModal.css'
 import service from '../../api/EmailService';
 import { MdOutgoingMail } from "react-icons/md";
-import CloseIcon from "../CloseIcon";
+import CloseIcon from "../Icons/CloseIcon/CloseIcon";
 
 function ForgotModal({ closeModal }) {
     const [email, setEmail] = useState("");

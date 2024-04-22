@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import service from '../../api/TradingPairsService';
 import FactorsModal from './FactorsModal';
-import CloseIcon from '../../components/CloseIcon';
+import CloseIcon from '../../components/Icons/CloseIcon/CloseIcon';
 import './TradeModal.css';
 
 function TradeModal({ closeModal, onSubmit, defaultValue }) {

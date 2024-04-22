@@ -1,6 +1,6 @@
 import directionValues from '../../data/directions.json';
 import resultValues from '../../data/results.json';
-import CloseIcon from '../../components/CloseIcon';
+import CloseIcon from '../../components/Icons/CloseIcon/CloseIcon';
 import './TradesTable.css';
 
 function TradesTable({ handleEdit, handleDelete, trades }) {
