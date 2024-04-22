@@ -15,8 +15,7 @@ export const service = {
     },
 
     async addFactor(newFactor) {
-
-        const responce = await fetch('/api/EntryFactors/AddEntryFactor', {
+        const responce = await fetch('/api/EntryFactors', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +29,7 @@ export const service = {
     },
 
     async deleteFactor(id) {
-        const responce = await fetch(`/api/EntryFactors/DeleteEntryFactor?factorId=${id}`, {
+        const responce = await fetch(`/api/EntryFactors/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -41,7 +40,7 @@ export const service = {
     },
 
     async updateFactor(id, name) {
-        const responce = await fetch(`/api/EntryFactors/UpdateEntryFactor?factorId=${id}`, {
+        const responce = await fetch(`/api/EntryFactors/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
