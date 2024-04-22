@@ -112,8 +112,12 @@ function EntryFactors() {
         await getFactors();
     }
 
-    async function handleEditFactor() {
-        await service.updateFactor(factorData.id, factorData.name);
+    async function handleEditFactor(e) {
+        e.preventDefault();
+        const factorName = {
+            name :  factorData.name
+        }
+        await service.updateFactor(factorData.id, factorName);
         setEditModalOpen(false);
         await getFactors();
     }
