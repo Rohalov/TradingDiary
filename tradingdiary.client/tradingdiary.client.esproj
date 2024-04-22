@@ -12,6 +12,7 @@
     <Folder Include="public\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\ConfirmModal\" />
+    <Folder Include="src\components\Icons\EditIcon\" />
     <Folder Include="src\contexts\" />
     <Folder Include="src\data\" />
     <Folder Include="src\pages\ReserPassword\" />
