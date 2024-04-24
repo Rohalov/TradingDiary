@@ -51,8 +51,8 @@
     background-color: #323546;
 }
 
-.form-group input,
-.form-group select {
+.form-group .input-block input,
+.form-group .input-block select {
     box-sizing: border-box;
     font-size: 14px;
     border: 1px solid rgb(64, 66, 78);
