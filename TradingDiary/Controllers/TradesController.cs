@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TradingDiary.Models.DTO;
 using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 using TradingDiary.Services;
 
 namespace TradingDiary.Controllers
@@ -18,14 +19,14 @@ namespace TradingDiary.Controllers
             _tradeService = tradeService;
         }
 
-        [HttpGet]
+        [HttpGet("{page}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<Trade>>> GetAllUserTrades()
+        public async Task<ActionResult<TradeResponse>> GetUserTrades([FromRoute] int page)
         {
             var userId = this.GetUserIdByClaims();
 
-            var trades = await _tradeService.GetAllUserTrades(userId);
+            var trades = await _tradeService.GetUserTrades(userId, page);
             if (trades == null)
             {
                 NotFound("User not found");

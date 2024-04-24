@@ -2,6 +2,7 @@
 using TradingDiary.Data;
 using TradingDiary.Models.DTO;
 using TradingDiary.Models.Entities;
+using TradingDiary.Models.Services;
 
 namespace TradingDiary.Services
 {
@@ -14,7 +15,7 @@ namespace TradingDiary.Services
             _context = context;
         }
 
-        public async Task<List<Trade>> GetAllUserTrades(int userId)
+        public async Task<TradeResponse> GetUserTrades(int userId, int page)
         {
             var userCard = await _context.UserCards
                 .Where(u => u.UserId == userId).FirstOrDefaultAsync();
@@ -23,14 +24,31 @@ namespace TradingDiary.Services
             {
                 return null;
             }
+
             var trades = await _context.Trades.Include(t => t.EntryFactors)
                 .Where(t => t.UserCardId == userCard.Id).ToListAsync();
+
             trades.ForEach(t =>
             {
                 t.UserCard = null;
                 t.EntryFactors.ForEach(f => f.Trades = null);
             });
-            return trades;
+
+            var pageResults = 25;
+            var pageCount = Math.Ceiling(trades.Count() / (double)pageResults);
+
+            var result = trades
+                .Skip((page - 1) * pageResults)
+                .Take(pageResults)
+                .ToList();
+
+            var response = new TradeResponse
+            {
+                Trades = result,
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+            return response;
         }
 
         public async Task<Trade> AddTrade(int userId, TradeDTO newTrade)
