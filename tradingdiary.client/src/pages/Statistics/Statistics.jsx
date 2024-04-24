@@ -39,6 +39,10 @@ function Statistics() {
             </div>
 
             <div className="main-content">
+                <div className="date-block">
+                    {stat === "" ? "..." : `${stat.from.split('T')[0]} : ${ stat.to.split('T')[0]}`}
+                </div>
+
                 <div className="statistic-grid">
                     <section>
                         <div id='stackedbar' className='section-block'>

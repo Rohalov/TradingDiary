@@ -29,6 +29,11 @@
     z-index: 100;
 }
 
+.date-block {
+    font-size: 20px;
+    padding-bottom : 0.4em;
+}
+
 .statistic-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
