@@ -39,8 +39,8 @@ export const service = {
         console.log(data);
     },
 
-    async getTrades() {
-        const responce = await fetch('/api/Trades', {
+    async getTrades(page) {
+        const responce = await fetch(`/api/Trades/${page}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

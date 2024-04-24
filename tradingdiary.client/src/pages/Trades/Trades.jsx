@@ -18,7 +18,7 @@ function Trades() {
 
     useEffect(() => {
         checkAuth();
-        updateData();
+        updateData(1);
     }, []);
 
     const handleEditRow = (index) => {
@@ -91,9 +91,9 @@ function Trades() {
         await updateData();
     }
 
-    async function updateData() {
-        const data = await service.getTrades();
-        setTrades(data);
+    async function updateData(page) {
+        const data = await service.getTrades(page);
+        setTrades(data.trades);
     }
 }
 
