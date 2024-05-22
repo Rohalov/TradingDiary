@@ -28,7 +28,7 @@ namespace TradingDiary.Controllers
             var entryFactors = await _entryFactorService.GetAllUserEntryFactors(userId);
             if (entryFactors == null)
             {
-                NotFound("User not found");
+                return NotFound("User not found");
             }
             return Ok(entryFactors);
         }
@@ -53,7 +53,7 @@ namespace TradingDiary.Controllers
             var dbFactor = await _entryFactorService.UpdateEntryFactor(userId, factorId, updatedFactor);
             if (dbFactor == null)
             {
-                NotFound("Entry factor not found");
+                return NotFound("Entry factor not found");
             }
             return Ok(dbFactor);
         }
@@ -68,7 +68,7 @@ namespace TradingDiary.Controllers
             var entryFactor = await _entryFactorService.DeleteEntryFactor(userId, factorId);
             if (entryFactor == null)
             {
-                NotFound("Factor does not exist");
+                return NotFound("Factor does not exist");
             }
             return Ok(entryFactor);
         }

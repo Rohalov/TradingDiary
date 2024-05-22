@@ -29,7 +29,7 @@ namespace TradingDiary.Controllers
             var trades = await _tradeService.GetUserTrades(userId, page);
             if (trades == null)
             {
-                NotFound("User not found");
+                return NotFound("User not found");
             }
             return Ok(trades);
         }
@@ -52,7 +52,7 @@ namespace TradingDiary.Controllers
             var dbtrade = await _tradeService.UpdateTrade(id, updatedTrade);
             if (dbtrade == null)
             {
-                NotFound("Trade not found");
+                return NotFound("Trade not found");
             }
             return Ok(dbtrade);
         }
@@ -65,7 +65,7 @@ namespace TradingDiary.Controllers
             var trade = await _tradeService.DeleteTrade(id);
             if (trade == null)
             {
-                NotFound("Trade does not exist");
+                return NotFound("Trade does not exist");
             }
             return Ok(trade);
         }
