@@ -1,0 +1,33 @@
+.pagination{
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.pagination li{
+    background: #323546;
+    min-width: 1em;
+    padding: 0 0.3em;
+    border-radius: 6px;
+}
+
+.pagination li:hover{
+    background-color: #252730;
+}
+
+.pagination .active{
+    background-color: #3861FB!important;
+}
+
+.pagination a{
+    color: #fff;
+}
+
+.pagination a:hover{
+    color: #fff;
+}
+
+#last, #first{
+    padding: 0 0.8em;
+}

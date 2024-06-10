@@ -6,6 +6,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import TradeModal from './TradeModal';
 import './Trades.css';
 import TradesTable from './TradesTable';
+import Pagination from './Pagination';
 
 function Trades() {
     const [trades, setTrades] = useState([]);
@@ -14,11 +15,13 @@ function Trades() {
     const [currentTradeId, setCurrentTradeId] = useState();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [checkAuth] = useContext(AuthContext);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [numberOfPages, setNumberOfPages] = useState();
 
 
     useEffect(() => {
         checkAuth();
-        updateData(1);
+        updateData(currentPage);
     }, []);
 
     const handleEditRow = (index) => {
@@ -69,6 +72,15 @@ function Trades() {
                 <button onClick={() => setModalOpen(true)}>Додати</button>
             </div>
 
+            <div className="pagination-block">
+                {numberOfPages != undefined &&
+                    <Pagination currPage={currentPage}
+                        pages={numberOfPages}
+                        handleChange={updateData}
+                    />
+                }
+            </div>
+
             {modalOpen && <TradeModal
                 closeModal={() => { setModalOpen(false); setTradeData(null); }}
                 onSubmit={handleSubmit}
@@ -83,17 +95,19 @@ function Trades() {
         } else {
             await service.updateTrade(currentTradeId, trade);
         }
-        await updateData();
+        await updateData(currentPage);
     }
 
     async function handleDeleteTrade() {
         await service.deleteTrade(currentTradeId);
-        await updateData();
+        await updateData(currentPage);
     }
 
     async function updateData(page) {
         const data = await service.getTrades(page);
         setTrades(data.trades);
+        setNumberOfPages(data.pages);
+        setCurrentPage(page);
     }
 }
 
